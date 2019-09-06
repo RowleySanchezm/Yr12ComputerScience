@@ -1,0 +1,11 @@
+body {font-family:Candara, Arial; font-size:12pt; color:#003399}
+h2 {font-size:16pt}
+h3 {font-size:14pt}
+
+#wrapper {margin:auto; background-color:#ADD8E6; width:40em; padding:5px}
+#header {height:75px; border-bottom:2pxdotted #B2BCC6}
+#header img {height:70px; float:left; padding-right:10px}
+#header h2 {padding-top:20px}
+#nav {float:left; width:16em}
+#container{float:right; width:23em}
+#nav li{padding-top:20px}
