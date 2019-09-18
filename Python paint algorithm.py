@@ -13,6 +13,7 @@ if units == 1:
     width = float(width)
     print(width)
 elif units == 2:
+    ### SRC - Did you need to repeat all this code? Can you think of another way?
     print("Calculation for the amount of paint that a cuboid room needs:")
     height = input("Enter height in metres ")
     height = float(height)
