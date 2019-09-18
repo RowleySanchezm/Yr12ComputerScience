@@ -1,19 +1,20 @@
 #Rock, paper, scissor game
-
+import random
 while True: ### SRC - Please use more meaningful conditions
     print("Please select: 1. Rock 2. paper 3. scissor ")
     choice = int(input("Your turn: "))
     while choice > 3 or choice < 1: 
         choice = int(input("enter valid input: "))
-    if choice == 1:
-        choice_name = 'Rock'
-    elif choice == 2: 
-        choice_name = 'paper'
-    else: 
-        choice_name = 'scissor'
+        if choice == 1:
+            choice_name = 'Rock'
+        elif choice == 2: 
+            choice_name = 'paper'
+        else: 
+            choice_name = 'scissor'
+        #End input
+    #End while
     print("You selected, ", choice_name)
         
-    import random  ### SRC - imports should be at the top of the file
     for x in range(1):
         comp_choice = random.randint(1, 3)
         if comp_choice == 1: 
@@ -22,6 +23,8 @@ while True: ### SRC - Please use more meaningful conditions
             comp_choice_name = 'paper'
         else: 
             comp_choice_name = 'scissor'
+        #End if
+    #Next
         print("The computer selected, ", comp_choice_name)
 ### SRC - Really good if statement
     if((choice == 1 and comp_choice == 2) or
@@ -36,13 +39,17 @@ while True: ### SRC - Please use more meaningful conditions
     else: 
         print("scissor wins =>", end = "") 
         result = "scissor"
+    #End if
 
     if result == choice_name: 
         print("<== User wins ==>") 
     else: 
-        print("<== Computer wins ==>") 
+        print("<== Computer wins ==>")
+    #End if
 
     print("Do you want to play again? (Y/N)") 
     ans = input()
-    if ans == 'n' or ans == 'N': 
+    if ans == 'n' or ans == 'N':
         break  ### SRC - please do not use break! 
+    #End if
+#End while
