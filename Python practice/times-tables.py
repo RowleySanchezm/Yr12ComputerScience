@@ -3,7 +3,7 @@
 verified = False
 
 while True:
-        print("Welcome to the times table calculator.") ### SRC - no need to indent twice
+        print("Welcome to the times table calculator.")
     while not verified: 
         table = -1
         while table < 1 or table > 20:
