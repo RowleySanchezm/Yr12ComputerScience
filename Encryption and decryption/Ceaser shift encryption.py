@@ -7,10 +7,8 @@ def encrypt(text,s):
     #Next i
         if (char.isupper()): 
             result += chr((ord(char) + s-65) % 26 + 65)
-            #^Formula found online
         else: 
             result += chr((ord(char) + s - 97) % 26 + 97)
-            #^Formula found online
         #End if
     return result
 #End function
