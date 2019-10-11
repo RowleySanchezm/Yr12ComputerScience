@@ -26,6 +26,8 @@ pygame.display.set_caption("My First Flipbook")
 game_over = False
 block_x = size[0]//2
 block_y = size[1]//2
+speed = 1
+direction = 0
 
 ### -- Game Loop
 while not game_over:
@@ -35,16 +37,18 @@ while not game_over:
             game_over = True
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                block_y = block_y - 10
+                direction = - 1
             elif event.key == pygame.K_DOWN:
-                block_y = block_y + 10
+                direction = 1
             #End If
+        elif event.type == pygame.KEYUP:
+            direction = 0
         #End If
     #Next event
 
             
     # -- Game logic goes after this comment
-    
+    block_y = block_y + direction * speed
     # -- Screen background is BLACK
     screen.fill (BLACK)
 
