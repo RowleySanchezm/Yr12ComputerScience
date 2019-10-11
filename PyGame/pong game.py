@@ -24,14 +24,14 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("My First Flipbook")
 
 game_over = False
-block_x = 10
-block_y = size[1]//2
+paddle_block_x = 10
+paddle_block_y = size[1]//2
 speed = 5
 direction = 0
-x_val = 150
-y_val = 200
-x_offset = 1
-y_offset = 1
+ball_x_val = 150
+ball_y_val = 200
+ball_x_offset = 1
+ball_y_offset = 1
 
 ### -- Game Loop
 while not game_over:
@@ -52,16 +52,20 @@ while not game_over:
 
             
     # -- Game logic goes after this comment
-    block_y = block_y + direction * speed
-    x_val = x_val + x_offset
-    y_val = y_val + y_offset
+    paddle_block_y = paddle_block_y + direction * speed
+    ball_x_val = ball_x_val + ball_x_offset
+    ball_y_val = ball_y_val + ball_y_offset
+    if ball_y_val > 480 - 20 or ball_y_val < 20:
+        ball_y_val *= -1
+    if ball_x_val > 640 - 20 or ball_x_val <20:
+        ball_x_val *= -1
     # -- Screen background is BLACK
     screen.fill (BLACK)
 
     # -- Draw here
 
-    pygame.draw.rect(screen, WHITE, (block_x, block_y, 15, 60))
-    pygame.draw.circle(screen, BLUE, (x_val,y_val),20,2)
+    pygame.draw.rect(screen, WHITE, (paddle_block_x, paddle_block_y, 15, 60))
+    pygame.draw.circle(screen, BLUE, (ball_x_val,ball_y_val),20,2)
 
     # -- flip display to reveal new position of objects
     pygame.display.flip()
