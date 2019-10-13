@@ -21,7 +21,7 @@ size = (640,480)
 screen = pygame.display.set_mode(size)
 
 # -- Title of new window/screen
-pygame.display.set_caption("My First Flipbook")
+pygame.display.set_caption("Pong game")
 
 game_over = False
 paddle_block_x = 10
@@ -55,10 +55,12 @@ while not game_over:
     paddle_block_y = paddle_block_y + direction * speed
     ball_x_val = ball_x_val + ball_x_offset
     ball_y_val = ball_y_val + ball_y_offset
+    
     if ball_y_val > 480 - 20 or ball_y_val < 20:
         ball_y_val *= -1
     if ball_x_val > 640 - 20 or ball_x_val <20:
         ball_x_val *= -1
+        
     # -- Screen background is BLACK
     screen.fill (BLACK)
 
