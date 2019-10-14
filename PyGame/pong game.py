@@ -26,7 +26,7 @@ pygame.display.set_caption("Pong game")
 game_over = False
 paddle_block_x = 10
 paddle_block_y = size[1]//2
-speed = 5
+speed = 8
 direction = 0
 ball_x_val = 150
 ball_y_val = 200
