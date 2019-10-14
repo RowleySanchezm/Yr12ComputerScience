@@ -30,8 +30,8 @@ speed = 5
 direction = 0
 ball_x_val = 150
 ball_y_val = 200
-ball_x_offset = 1
-ball_y_offset = 1
+ball_x_offset = 3
+ball_y_offset = 3
 
 ### -- Game Loop
 while not game_over:
@@ -52,14 +52,25 @@ while not game_over:
 
             
     # -- Game logic goes after this comment
+
+    #making the paddle move
     paddle_block_y = paddle_block_y + direction * speed
     ball_x_val = ball_x_val + ball_x_offset
     ball_y_val = ball_y_val + ball_y_offset
-    
-    if ball_y_val > 480 - 20 or ball_y_val < 20:
-        ball_y_val *= -1
-    if ball_x_val > 640 - 20 or ball_x_val <20:
-        ball_x_val *= -1
+
+    #Making the ball bounce off the wall
+    if ball_y_val > 480 - 10 or ball_y_val < 10:
+        ball_y_offset *= -1
+    if ball_x_val > 640 - 10 or ball_x_val < 10:
+        ball_x_offset *= -1
+
+    #Making the ball collide with the paddle
+    if ball_x_val < 35 and ball_y_val > paddle_block_y and ball_y_val < paddle_block_y + 60:
+        ball_x_offset *= -1
+
+    #Update position of the ball
+    ball_x_val += ball_x_offset
+    ball_y_val += ball_y_offset
         
     # -- Screen background is BLACK
     screen.fill (BLACK)
@@ -67,7 +78,7 @@ while not game_over:
     # -- Draw here
 
     pygame.draw.rect(screen, WHITE, (paddle_block_x, paddle_block_y, 15, 60))
-    pygame.draw.circle(screen, BLUE, (ball_x_val,ball_y_val),20,2)
+    pygame.draw.circle(screen, BLUE, (ball_x_val,ball_y_val),10,2)
 
     # -- flip display to reveal new position of objects
     pygame.display.flip()
