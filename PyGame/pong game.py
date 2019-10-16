@@ -2,6 +2,13 @@ import pygame
 
 game_over = False
 
+def draw_text(surf, text, size, x, y):
+    font = pygame.font.SysFont("comicsansms",20)
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
+
 def text_objects_red(text, font):
     textSurface = font.render(text, True, RED)
     return textSurface, textSurface.get_rect()
@@ -92,8 +99,14 @@ pygame.display.set_caption("Pong game")
 
 ### -- Game Loop
 def game_loop():
+    score_left = 0
+    score_right = 0
     paddle_block_x = 10
-    paddle_block_y = size[1]//2
+    paddle_block_y = display_height//2
+    paddle2_block_x = 615
+    paddle2_block_y = display_height//2
+    paddle2_speed = 6
+    paddle2_direction = 0
     speed = 8
     direction = 0
     ball_x_val = 150
@@ -118,26 +131,44 @@ def game_loop():
             #End If
         #Next event
 
+
                 
         # -- Game logic goes after this comment
 
-        #making the paddle move
+        #Making the left paddle move
         paddle_block_y = paddle_block_y + direction * speed
         ball_x_val = ball_x_val + ball_x_offset
         ball_y_val = ball_y_val + ball_y_offset
 
+        #Making the right paddle move
+        if paddle2_block_y > ball_y_val:
+            paddle2_block_y -= 5
+        elif paddle2_block_y < ball_y_val:
+            paddle2_block_y += 5
+        #End if
+
+        #Adding score to the board
+        if ball_x_val <= 10:
+            score_left += 1
+        elif ball_x_val >= 630:
+            score_right += 1
+        
         #Making the ball bounce off the wall
         if ball_y_val > 480 - 10 or ball_y_val < 10:
             ball_y_offset *= -1
-        #End if 
+        #End if
+        
         if ball_x_val > 640 - 10 or ball_x_val < 10:
             ball_x_offset *= -1
         #End if
 
-        #Making the ball collide with the left paddle
+        #Making the ball collide with the left and right paddle
         if ball_x_val < 35 and ball_y_val > paddle_block_y and ball_y_val < paddle_block_y + 60:
             ball_x_offset *= -1
+        elif ball_x_val > 605 and ball_y_val > paddle2_block_y and ball_y_val < paddle2_block_y + 60:
+            ball_x_offset *= -1
         #End if
+
 
         #Update position of the ball
         ball_x_val += ball_x_offset
@@ -149,7 +180,9 @@ def game_loop():
         # -- Draw here
 
         pygame.draw.rect(screen, WHITE, (paddle_block_x, paddle_block_y, 15, 60))
+        pygame.draw.rect(screen, WHITE, (paddle2_block_x, paddle2_block_y, 15, 60))
         pygame.draw.circle(screen, BLUE, (ball_x_val,ball_y_val),10,2)
+        draw_text(screen, (str(score_left) + ':' + str(score_right)), 18, display_width / 2, 10)
 
         # -- flip display to reveal new position of objects
         pygame.display.flip()
@@ -158,7 +191,7 @@ def game_loop():
         clock.tick(60)
 
     #End While - End of game loop
-
+#End function
         
 game_intro()
 game_loop()
