@@ -39,16 +39,16 @@ def button(msg,x,y,w,h,ic,ac,action=None):
     #End if
 #End function
     
-def game_intro():
+def game_intro(screen,intro):
     
-    intro = True
 
     while intro:
         for event in pygame.event.get():
             #print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
-                quit()
+                intro = False
+                #quit()
             #End if
         #Next event
         screen.fill(BLACK)
@@ -57,7 +57,7 @@ def game_intro():
         TextRect.center = ((display_width/2),(display_height/2))
         screen.blit(TextSurf, TextRect)
 
-        button("GO!",100,400,100,50,GREEN,BRIGHT_GREEN,game_loop)
+        button("GO!",100,400,100,50,GREEN,BRIGHT_GREEN,game_loop(screen))
         button("Quit",430,400,100,50,RED,BRIGHT_RED,game_over)
 
         pygame.display.update()
@@ -98,7 +98,7 @@ pygame.display.set_caption("Pong game")
 
 
 ### -- Game Loop
-def game_loop():
+def game_loop(screen):
     score_left = 0
     score_right = 0
     paddle_block_x = 10
@@ -142,16 +142,25 @@ def game_loop():
 
         #Making the right paddle move
         if paddle2_block_y > ball_y_val:
-            paddle2_block_y -= 5
+            paddle2_block_y -= 6
         elif paddle2_block_y < ball_y_val:
-            paddle2_block_y += 5
+            paddle2_block_y += 6
         #End if
 
-        #Adding score to the board
+        #Adding score to the board and restarting ball
         if ball_x_val <= 10:
-            score_left += 1
-        elif ball_x_val >= 630:
             score_right += 1
+            ball_x_val = display_width // 2
+            ball_y_val = display_height // 2
+            ball_x_val += ball_x_offset
+            ball_y_val += ball_y_offset
+        elif ball_x_val >= 630:
+            score_left += 1
+            ball_x_val = display_width // 2
+            ball_y_val = display_height // 2
+            ball_x_val += ball_x_offset
+            ball_y_val += ball_y_offset
+        #End if
         
         #Making the ball bounce off the wall
         if ball_y_val > 480 - 10 or ball_y_val < 10:
@@ -182,7 +191,7 @@ def game_loop():
         pygame.draw.rect(screen, WHITE, (paddle_block_x, paddle_block_y, 15, 60))
         pygame.draw.rect(screen, WHITE, (paddle2_block_x, paddle2_block_y, 15, 60))
         pygame.draw.circle(screen, BLUE, (ball_x_val,ball_y_val),10,2)
-        draw_text(screen, (str(score_left) + ':' + str(score_right)), 18, display_width / 2, 10)
+        draw_text(screen, (str(score_left) + ' : ' + str(score_right)), 18, display_width / 2, 10)
 
         # -- flip display to reveal new position of objects
         pygame.display.flip()
@@ -192,8 +201,8 @@ def game_loop():
 
     #End While - End of game loop
 #End function
-        
-game_intro()
-game_loop()
+intro = True        
+game_intro(screen,intro)
+#game_loop(screen)
 pygame.quit()
-quit()
+#quit()
