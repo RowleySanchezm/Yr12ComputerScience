@@ -142,9 +142,9 @@ def game_loop(screen):
 
         #Making the right paddle move
         if paddle2_block_y > ball_y_val:
-            paddle2_block_y -= 6
+            paddle2_block_y -= 5
         elif paddle2_block_y < ball_y_val:
-            paddle2_block_y += 6
+            paddle2_block_y += 5
         #End if
 
         #Adding score to the board and restarting ball
