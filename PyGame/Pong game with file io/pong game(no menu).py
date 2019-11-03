@@ -58,6 +58,7 @@ def game_loop(screen):
     ball_y_offset = 3
     computer_speed = 7
     end_count = 0
+    highscore = 0
     global game_over
     while not game_over:
         
@@ -123,7 +124,7 @@ def game_loop(screen):
         #End if
 
 
-        #Making the ball collide with the left and right paddle, plus controlling its speed
+        #Making the ball collide with the left and right paddle, plus controlling its speed, as well as highscore
         ball_x_val = ball_x_val + ball_x_offset
         ball_y_val = ball_y_val + ball_y_offset
         if ball_x_val < 35 and ball_y_val > paddle_block_y and ball_y_val < paddle_block_y + 60:
@@ -133,12 +134,24 @@ def game_loop(screen):
                 ball_x_offset += 1
                 ball_y_offset += 1
             #End if
+            if end_count > highscore:
+                highscore = end_count
+                f = open("highscore.txt","wt")
+                f.write(str(highscore))
+                f.close
+            #End if
         elif ball_x_val > 605 and ball_y_val > paddle2_block_y and ball_y_val < paddle2_block_y + 60:
             ball_x_offset *= -1
             end_count += 1
             if end_count > 4:
                 ball_x_offset += 1
                 ball_y_offset += 1
+            #End if
+            if end_count > highscore:
+                highscore = end_count
+                f = open("highscore.txt","wt")
+                f.write(str(highscore))
+                f.close
             #End if
         #End if
 
@@ -156,8 +169,9 @@ def game_loop(screen):
         pygame.draw.rect(screen, WHITE, (paddle_block_x, paddle_block_y, 15, 60))
         pygame.draw.rect(screen, WHITE, (paddle2_block_x, paddle2_block_y, 15, 60))
         pygame.draw.circle(screen, BLUE, (ball_x_val,ball_y_val),10,2)
+        draw_text(screen, 'Highscore: ' + (str(highscore), 18, 20, 10)
         draw_text(screen, (str(score_left) + ' : ' + str(score_right)), 18, display_width / 2, 10)
-
+        
 
         # -- flip display to reveal new position of objects
         pygame.display.flip()
