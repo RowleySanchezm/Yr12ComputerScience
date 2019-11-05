@@ -1,5 +1,5 @@
 #Recursive factorial function
-
+### SRC - That's great, but which one is faster? Try timing it.
 def recur_factorial(n):
    if n == 1:
        return n
