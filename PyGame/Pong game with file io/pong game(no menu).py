@@ -169,7 +169,7 @@ def game_loop(screen):
         pygame.draw.rect(screen, WHITE, (paddle_block_x, paddle_block_y, 15, 60))
         pygame.draw.rect(screen, WHITE, (paddle2_block_x, paddle2_block_y, 15, 60))
         pygame.draw.circle(screen, BLUE, (ball_x_val,ball_y_val),10,2)
-        draw_text(screen, 'Highscore: ' + (str(highscore), 18, 20, 10)
+        #draw_text(screen, 'Highscore: ' + (str(highscore), 18, 20, 10)
         draw_text(screen, (str(score_left) + ' : ' + str(score_right)), 18, display_width / 2, 10)
         
 
