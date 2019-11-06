@@ -1,3 +1,6 @@
+### SRC - Good to see some nice parabolic movement
+### There's a bit of a jump at the end.
+
 import pygame
 # -- Global Constants
 
