@@ -6,6 +6,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED   = (255, 0, 0)
 BLUE = (34, 20, 235)
+YELLOW = (252, 240, 80)
 
 class Invader(pygame.sprite.Sprite):
     
@@ -35,15 +36,32 @@ class Invader(pygame.sprite.Sprite):
             self.reset_pos()
         #End if
 
-class Player(Invader):
-    #Derrives from block, but overrides the update function so that player block follows mouse
-    def update(self):
-        # Get the current mouse position
-        pos = pygame.mouse.get_pos()
+class Player(pygame.sprite.Sprite):
 
-        # Set the player object to the mouse location
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
+    def __init__(self):
+        super().__init__()
+
+        self.image = pygame.Surface([30, 10])
+        self.image.fill(YELLOW)
+        self.player_set_speed = 0
+        self.rect = self.image.get_rect()
+        self.rect.x = screen_width // 2
+        self.speed = 8
+        
+    
+    #Makes it moves left and right 
+    def update(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    player.player_set_speed(-3)
+                elif event.key == pygame.K_RIGHT:
+                    player.player_set_speed(3)
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    player.player_set_speed(0)
 
 
 #Initialise Pygame
@@ -63,7 +81,7 @@ all_sprites_list = pygame.sprite.Group()
 #Creating 30 random invaders using a for loop
 for i in range(30):
     # This represents an invader
-    invader = Invader(BLUE, 20, 15)
+    invader = Invader(BLUE, 10, 10)
  
     # Set a random location for the block
     invader.rect.x = random.randrange(screen_width)
@@ -75,7 +93,8 @@ for i in range(30):
 #Next i
 
 #Creating the player block
-player = Player(RED, 20, 15)
+player = Player()
+player.rect.y = 380
 all_sprites_list.add(player)
 
 
@@ -92,10 +111,13 @@ while not done:
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             done = True
- 
+     
     # Clear the screen
     screen.fill(BLACK)
 
+    #Update position of player
+    player.rect.x = player.rect.x + player.player_set_speed
+    
     #Calls update() method on every sprite in the list
     all_sprites_list.update()
 
