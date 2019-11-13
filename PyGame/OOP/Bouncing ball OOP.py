@@ -26,6 +26,7 @@ class Ball():
         self.direction_x = random.randint(1, 9)
         self.direction_y = random.randint(1, 9)
         self.colour = random.choice(COLOURS)
+        self.radius = random.randint(5,20)
         
     def move(self):
         if self.x >= WIDTH-15 or self.x <= 0+15:
@@ -36,7 +37,7 @@ class Ball():
         self.x += self.direction_x
 
     def draw(self):
-        pygame.draw.circle(screen, self.colour, (block.x, block.y), 15)
+        pygame.draw.circle(screen, self.colour, (block.x, block.y), self.radius)
     
 # -- Initialise PyGame
 pygame.init()
