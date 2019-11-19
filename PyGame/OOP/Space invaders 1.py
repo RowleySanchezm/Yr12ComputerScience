@@ -43,7 +43,6 @@ class Player(pygame.sprite.Sprite):
 
         self.image = pygame.Surface([30, 10])
         self.image.fill(YELLOW)
-        self.player_set_speed = 0
         self.rect = self.image.get_rect()
         self.rect.x = screen_width // 2
         self.speed = 8
@@ -51,17 +50,11 @@ class Player(pygame.sprite.Sprite):
     
     #Makes it moves left and right 
     def update(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    player.player_set_speed(-3)
-                elif event.key == pygame.K_RIGHT:
-                    player.player_set_speed(3)
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    player.player_set_speed(0)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            player.rect.x -= 5
+        if keys[pygame.K_RIGHT]:
+            player.rect.x += 5
 
 
 #Initialise Pygame
@@ -116,7 +109,7 @@ while not done:
     screen.fill(BLACK)
 
     #Update position of player
-    player.rect.x = player.rect.x + player.player_set_speed
+    player.update()
     
     #Calls update() method on every sprite in the list
     all_sprites_list.update()
