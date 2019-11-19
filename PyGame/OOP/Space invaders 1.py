@@ -52,9 +52,19 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            player.rect.x -= 5
+            if player.rect.x <= 0:
+                player.rect.x += 0
+            else:
+                player.rect.x -= 5
+            #end if
+        #end if
         if keys[pygame.K_RIGHT]:
-            player.rect.x += 5
+            if player.rect.x >= 700 - 30:
+                player.rect.x += 0
+            else:
+                player.rect.x += 5
+            #end if
+        #end if
 
 
 #Initialise Pygame
@@ -104,6 +114,8 @@ while not done:
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             done = True
+        #End if
+    #Next event
      
     # Clear the screen
     screen.fill(BLACK)
@@ -134,5 +146,7 @@ while not done:
 
     #Update screen
     pygame.display.flip()
+    
+#End while
 
 pygame.quit()
