@@ -8,6 +8,16 @@ RED   = (255, 0, 0)
 BLUE = (34, 20, 235)
 YELLOW = (252, 240, 80)
 
+
+def draw_text(surf, text, size, x, y): 
+    font = pygame.font.SysFont("comicsansms",20)
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
+#End function
+
+
 class Invader(pygame.sprite.Sprite):
     
     def __init__(self, colour, width, height):
@@ -26,6 +36,7 @@ class Invader(pygame.sprite.Sprite):
         #reset to a random position on top of the screen
         self.rect.y = random.randrange(-50, 0)
         self.rect.x = random.randrange(0, screen_width)
+    #End function
  
     def update(self):
         # Move invader down one pixel
@@ -35,6 +46,7 @@ class Invader(pygame.sprite.Sprite):
         if self.rect.y > 410:
             self.reset_pos()
         #End if
+    #End function
 
 class Player(pygame.sprite.Sprite):
 
@@ -46,6 +58,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = screen_width // 2
         self.speed = 8
+        bullet_count = 50
+    #End function 
         
     
     #Makes it moves left and right 
@@ -65,8 +79,27 @@ class Player(pygame.sprite.Sprite):
                 player.rect.x += 5
             #end if
         #end if
+    #End function
 
+class Bullet(pygame.sprite.Sprite):
+    
+    speed = 4
 
+    def __init__(self, colour, width, height):
+        super().__init__()
+        #Create an image of block
+        self.image = pygame.Surface([width, height])
+        self.image.fill(colour)
+
+        #Fetching the rectangle image
+        self.rect = self.image.get_rect()
+    #End function
+
+    def update(self):
+        # Moving bullet up the screen
+        self.rect.y -= speed
+    #End function
+    
 #Initialise Pygame
 pygame.init()
 
@@ -82,7 +115,7 @@ invader_list = pygame.sprite.Group()
 all_sprites_list = pygame.sprite.Group()
 
 #Creating 30 random invaders using a for loop
-for i in range(30):
+for i in range(25):
     # This represents an invader
     invader = Invader(BLUE, 10, 10)
  
@@ -107,7 +140,7 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
  
-score = 0
+score = 5
  
 # -------- Main Program Loop -----------
 while not done:
@@ -116,7 +149,29 @@ while not done:
             done = True
         #End if
     #Next event
-     
+
+    #Creating lists for bullets
+    bullet_group = pygame.sprite.Group()
+    bullet_hit_group = pygame.sprite.Group()
+    
+    #Creating bullets
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        player.bullet_count -= 1
+        bullet = Bullet(RED, 2, 2)
+
+        #Bullet comes from player
+        bullet.rect.x = player.rect.x
+        bullet.rect.y = play.rect.y
+
+        #Add bullets to appropiate list
+        bullet_group(bullet)
+    #End if
+
+    #See if bullets have hit any invaders
+    bullet_hit_group = pygame.sprite.spritecollide(bullet_group, invader_list, False)
+        
+        
     # Clear the screen
     screen.fill(BLACK)
 
@@ -129,15 +184,16 @@ while not done:
     #See if the player block has collided with anthing
     invader_hit_list = pygame.sprite.spritecollide(player, invader_list, False)
 
-    #Check the list of collisions
+    #Check the player for collisions then update lives
+    draw_text(screen, 'Lives: ' + str(score), 18, screen_width // 2, 10)
+
     for invader in invader_hit_list:
-        score += 1
-        print(score)
+        score -= 1
 
         #Reset the invader to top of screen to fall again
         invader.reset_pos()
     #Next block
-
+    
     #Draw all the sprites
     all_sprites_list.draw(screen)
         
