@@ -58,7 +58,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = screen_width // 2
         self.speed = 8
-        bullet_count = 50
+        self.bullet_count = 50
     #End function 
         
     
@@ -81,9 +81,11 @@ class Player(pygame.sprite.Sprite):
         #end if
     #End function
 
+    def bullet_count(self):
+        self.bullet_count -= 1
+
 class Bullet(pygame.sprite.Sprite):
     
-    speed = 4
 
     def __init__(self, colour, width, height):
         super().__init__()
@@ -93,11 +95,12 @@ class Bullet(pygame.sprite.Sprite):
 
         #Fetching the rectangle image
         self.rect = self.image.get_rect()
+        self.speed = 4
     #End function
 
     def update(self):
         # Moving bullet up the screen
-        self.rect.y -= speed
+        self.rect.y -= self.speed
     #End function
     
 #Initialise Pygame
@@ -156,27 +159,24 @@ while not done:
     
     #Creating bullets
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP]:
+    if player.bullet_count > 0 and keys[pygame.K_UP]:
         player.bullet_count -= 1
         bullet = Bullet(RED, 2, 2)
 
         #Bullet comes from player
         bullet.rect.x = player.rect.x
-        bullet.rect.y = play.rect.y
+        bullet.rect.y = player.rect.y
 
         #Add bullets to appropiate list
         bullet_group(bullet)
+        all_sprites_list(bullet)
     #End if
 
     #See if bullets have hit any invaders
-    bullet_hit_group = pygame.sprite.spritecollide(bullet_group, invader_list, False)
-        
+    bullet_hit_group = pygame.sprite.groupcollide(bullet_group, invader_list, False, False)
         
     # Clear the screen
     screen.fill(BLACK)
-
-    #Update position of player
-    player.update()
     
     #Calls update() method on every sprite in the list
     all_sprites_list.update()
