@@ -168,8 +168,8 @@ while not done:
         bullet.rect.y = player.rect.y
 
         #Add bullets to appropiate list
-        bullet_group(bullet)
-        all_sprites_list(bullet)
+        bullet_group.add(bullet)
+        all_sprites_list.add(bullet)
     #End if
 
     #See if bullets have hit any invaders
