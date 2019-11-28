@@ -59,6 +59,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = screen_width // 2
         self.speed = 8
         self.bullet_count = 50
+        self.centre = 30 // 2
     #End function 
         
     
@@ -128,13 +129,17 @@ for i in range(25):
  
     # Add the block to the list of objects
     invader_list.add(invader)
-    all_sprites_list.add(invader)
+    #all_sprites_list.add(invader)
 #Next i
 
 #Creating the player block
 player = Player()
 player.rect.y = 380
 all_sprites_list.add(player)
+
+#Creating lists for bullets
+bullet_group = pygame.sprite.Group()
+bullet_hit_group = pygame.sprite.Group()
 
 
 # Loop until the user clicks the close button.
@@ -143,7 +148,8 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
  
-score = 5
+lives = 5
+score = 0
  
 # -------- Main Program Loop -----------
 while not done:
@@ -153,9 +159,6 @@ while not done:
         #End if
     #Next event
 
-    #Creating lists for bullets
-    bullet_group = pygame.sprite.Group()
-    bullet_hit_group = pygame.sprite.Group()
     
     #Creating bullets
     keys = pygame.key.get_pressed()
@@ -164,38 +167,50 @@ while not done:
         bullet = Bullet(RED, 2, 2)
 
         #Bullet comes from player
-        bullet.rect.x = player.rect.x
+        bullet.rect.x = player.rect.x + player.centre
         bullet.rect.y = player.rect.y
 
         #Add bullets to appropiate list
         bullet_group.add(bullet)
-        all_sprites_list.add(bullet)
+        #all_sprites_list.add(bullet)
     #End if
 
-    #See if bullets have hit any invaders
-    bullet_hit_group = pygame.sprite.groupcollide(bullet_group, invader_list, False, False)
         
     # Clear the screen
     screen.fill(BLACK)
     
     #Calls update() method on every sprite in the list
     all_sprites_list.update()
+    invader_list.update()
+    bullet_group.update()
+
+    #See if bullets have hit any invaders
+    bullet_hit_group = pygame.sprite.groupcollide(bullet_group, invader_list, True, True)
+
 
     #See if the player block has collided with anthing
     invader_hit_list = pygame.sprite.spritecollide(player, invader_list, False)
 
-    #Check the player for collisions then update lives
-    draw_text(screen, 'Lives: ' + str(score), 18, screen_width // 2, 10)
+    #Check the player for collisions then update lives and score
+    draw_text(screen, 'LIVES: ' + str(lives), 18, screen_width // 6, 15)
+    draw_text(screen, 'SCORE: ' + str(score), 18, screen_width // 6, 30)
+    draw_text(screen, 'BULLET COUNT: ' + str(player.bullet_count), 18, screen_width // 6, 45)
+
+    for bullet in bullet_hit_group:
+        score += 10
+    #next bullet
 
     for invader in invader_hit_list:
-        score -= 1
-
+        lives -= 1
+        score -= 50
         #Reset the invader to top of screen to fall again
         invader.reset_pos()
-    #Next block
+    #Next invader
     
     #Draw all the sprites
     all_sprites_list.draw(screen)
+    invader_list.draw(screen)
+    bullet_group.draw(screen)
         
     #Limit to 20 frames per second
     clock.tick(20)
