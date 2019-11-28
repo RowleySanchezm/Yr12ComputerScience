@@ -17,6 +17,14 @@ def draw_text(surf, text, size, x, y):
     surf.blit(text_surface, text_rect)
 #End function
 
+def game_over(surf, text, size, x, y): 
+    font = pygame.font.SysFont("comicsansms",50)
+    text_surface = font.render(text, True, RED)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
+#End function
+
 
 class Invader(pygame.sprite.Sprite):
     
@@ -211,6 +219,11 @@ while not done:
     all_sprites_list.draw(screen)
     invader_list.draw(screen)
     bullet_group.draw(screen)
+
+    #Game over display
+    if lives <= 0:
+        game_over(screen, 'GAME OVER', 50, screen_width // 2, screen_height // 2)
+    #End if
         
     #Limit to 20 frames per second
     clock.tick(20)
