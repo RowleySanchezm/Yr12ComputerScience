@@ -57,9 +57,11 @@ class Invader(pygame.sprite.Sprite):
         #End if
         if self.rect.x >= screen_width - 10:
             self.x_direction *= -1
+            self.rect.x *= -1
             self.rect.y += 30
         elif self.rect.x <= 0:
             self.x_direction *= -1
+            self.rect.x *= -1
             self.rect.y += 30
         #End if
             
