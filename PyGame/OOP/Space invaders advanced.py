@@ -56,11 +56,11 @@ class Invader(pygame.sprite.Sprite):
             self.reset_pos()
         #End if
         if self.rect.x >= screen_width - 10:
-            self.x_direction += -1
-            self.rect.y += 30
+            self.x_direction *= -1
+            self.rect.y += 40
         elif self.rect.x <= 0:
-            self.x_direction += -1
-            self.rect.y += 30
+            self.x_direction *= -1
+            self.rect.y += 40
         #End if
             
     #End function
@@ -75,7 +75,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = screen_width // 2
         self.speed = 8
-        self.bullet_count = 50
+        self.bullet_count = 75
         self.centre = 30 // 2
     #End function 
         
@@ -114,7 +114,7 @@ class Bullet(pygame.sprite.Sprite):
 
         #Fetching the rectangle image
         self.rect = self.image.get_rect()
-        self.speed = 4
+        self.speed = 6
     #End function
 
     def update(self):
