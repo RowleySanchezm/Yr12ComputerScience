@@ -49,19 +49,17 @@ class Invader(pygame.sprite.Sprite):
  
     def update(self):
         # Move invader across one pixel
-        self.rect.x += 1
+        self.rect.x += self.x_direction
  
         # If invader is too far down, reset to top of screen.
         if self.rect.y > 410:
             self.reset_pos()
         #End if
         if self.rect.x >= screen_width - 10:
-            self.x_direction *= -1
-            self.rect.x *= -1
+            self.x_direction += -1
             self.rect.y += 30
         elif self.rect.x <= 0:
-            self.x_direction *= -1
-            self.rect.x *= -1
+            self.x_direction += -1
             self.rect.y += 30
         #End if
             
