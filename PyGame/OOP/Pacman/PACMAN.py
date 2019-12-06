@@ -23,6 +23,8 @@ class Wall(pygame.sprite.Sprite):
         self.image = pygame.Surface([block_dimensions, block_dimensions])
         self.image.fill(colour)
         self.rect = self.image.get_rect()
+        self.rect.x = x_position
+        self.rect.y = y_position
     #end procedure
 #end class
 
