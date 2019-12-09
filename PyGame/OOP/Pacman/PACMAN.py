@@ -11,9 +11,9 @@ RED = (255,0,0)
 LILAC = (216,104,250)
 
 # -- Blank Screen
-size = (800, 800)
-screen_height = 800
-screen_width = 800
+size = (600, 600)
+screen_height = 600
+screen_width = 600
 screen = pygame.display.set_mode(size)
 
 class Wall(pygame.sprite.Sprite):
@@ -29,6 +29,11 @@ class Wall(pygame.sprite.Sprite):
         self.rect.y = y_position
     #end procedure
 #end class
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self,block_dimensions,colour):
+        super().__init__()
+        
 
 # -- Initialise PyGame
 pygame.init()
@@ -52,13 +57,13 @@ for line in f:
     x_position = 0
     for item in line:
         if item == "w":
-            wall = Wall(40,LILAC)
+            wall = Wall(30,BLUE)
             wall.rect.x = x_position
             wall.rect.y = y_position
             wall_group.add(wall)
             all_sprites_group.add(wall)
-        x_position += 40
-    y_position += 40
+        x_position += 30
+    y_position += 30
 
 ### SRC - f.close()
         
