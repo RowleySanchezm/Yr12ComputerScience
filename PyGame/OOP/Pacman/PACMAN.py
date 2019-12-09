@@ -23,8 +23,10 @@ class Wall(pygame.sprite.Sprite):
         self.image = pygame.Surface([block_dimensions, block_dimensions])
         self.image.fill(colour)
         self.rect = self.image.get_rect()
-#        self.rect.x = x_position  # SRC - You have not set these as parameters
-#        self.rect.y = y_position
+        x_position = 0
+        y_position = 0
+        self.rect.x = x_position
+        self.rect.y = y_position
     #end procedure
 #end class
 
@@ -44,21 +46,19 @@ game_over = False
 wall_group = pygame.sprite.Group()
 all_sprites_group = pygame.sprite.Group()
 
-y_position = 0
 f = open("maze.txt","rt")
-### SRC - You need y_position = 0
-data = f.read()  ### SRC - remove this line
-for line in data: ### SRC - This should be - for line in f:
-    y_position += 40  ### SRC - This line should go at the end of the loop
+y_position = 0
+for line in f:
     x_position = 0
-    for x_position in line: ### SRC - This should be - for item in line 
-        if x_position == "w":  ### SRC - if item == "w"
+    for item in line:
+        if item == "w":
             wall = Wall(40,LILAC)
             wall.rect.x = x_position
             wall.rect.y = y_position
             wall_group.add(wall)
             all_sprites_group.add(wall)
-            x_position += 40 ### SRC - unindent this one tab
+        x_position += 40
+    y_position += 40
 
 ### SRC - f.close()
         
