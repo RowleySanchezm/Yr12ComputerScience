@@ -11,9 +11,9 @@ RED = (255,0,0)
 LILAC = (216,104,250)
 
 # -- Blank Screen
-size = (600, 600)
 screen_height = 600
 screen_width = 600
+size = (screen_height, screen_width)
 screen = pygame.display.set_mode(size)
 
 class Wall(pygame.sprite.Sprite):
@@ -40,37 +40,49 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 30
         self.rect.y = 30
 
+        #Set speed vectors
+        self.walls = None
+        self.change_x = 0
+        self.change_y = 0
+    #End procedure
+        
+    def changespeed(self, x, y):
+        self.change_x += x
+        self.change_y += y
+    #End procedure
+ 
     def update(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            if pygame.sprite.spritecollide(player,wall_group,False):
-                player.rect.x += 0
+        # Move left/right
+        self.rect.x += self.change_x
+ 
+        block_hit_list = pygame.sprite.spritecollide(self, self.walls, False)
+        for block in block_hit_list:
+            # If we are moving right, set our right side to the left side of
+            # the item we hit
+            if self.change_x > 0:
+                self.rect.right = block.rect.left
             else:
-                player.rect.x -= 4
-            #end if
-        #end if
-        if keys[pygame.K_RIGHT]:
-            if pygame.sprite.spritecollide(player,wall_group,False):
-                player.rect.x += 0
-            else:
-                player.rect.x += 4
-            #end if
-        #end if
-        if keys[pygame.K_UP]:
-            if pygame.sprite.spritecollide(player,wall_group,False):
-                player.rect.y += 0
-            else:
-                player.rect.y -= 4
+                # Otherwise if we are moving left, do the opposite.
+                self.rect.left = block.rect.right
             #End if
-        #End if
-        if keys[pygame.K_DOWN]:
-            if pygame.sprite.spritecollide(player,wall_group,False):
-                player.rect.y += 0
+        #Next block
+ 
+        # Move up/down
+        self.rect.y += self.change_y
+ 
+        # Check and see if we hit anything
+        block_hit_list = pygame.sprite.spritecollide(self, self.walls, False)
+        for block in block_hit_list:
+ 
+            # Reset our position based on the top/bottom of the object.
+            if self.change_y > 0:
+                self.rect.bottom = block.rect.top
             else:
-                player.rect.y += 4
+                self.rect.top = block.rect.bottom
             #End if
-        #End if
+        #Next block
     #End function
+ 
         
 
 # -- Initialise PyGame
@@ -109,6 +121,7 @@ for line in f:
 f.close()
 
 player = Player(20, YELLOW)
+player.walls = wall_group
 all_sprites_group.add(player)
 player_group.add(player)
 
@@ -119,11 +132,30 @@ while not game_over:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_over = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                player.changespeed(-3, 0)
+            elif event.key == pygame.K_RIGHT:
+                player.changespeed(3, 0)
+            elif event.key == pygame.K_UP:
+                player.changespeed(0, -3)
+            elif event.key == pygame.K_DOWN:
+                player.changespeed(0, 3)
+ 
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                player.changespeed(3, 0)
+            elif event.key == pygame.K_RIGHT:
+                player.changespeed(-3, 0)
+            elif event.key == pygame.K_UP:
+                player.changespeed(0, 3)
+            elif event.key == pygame.K_DOWN:
+                player.changespeed(0, -3)
         #End If
     #Next event
 
     #Calls update() method on every sprite
-    player_group.update()
+    all_sprites_group.update()
             
             
     # -- Game logic goes after this comment
