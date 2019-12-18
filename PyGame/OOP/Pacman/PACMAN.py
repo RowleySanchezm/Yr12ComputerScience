@@ -1,5 +1,6 @@
 import pygame
 import sys
+import heapq
 # -- Global Constants
 
 # -- Colours
@@ -82,8 +83,65 @@ class Player(pygame.sprite.Sprite):
             #End if
         #Next block
     #End function
- 
+
+class Vertex(object):
+
+    def __init__(self,name):
+        super().__init__()
+        self.name = name
+        self.visited = False
+        self.predecessor = None
+        self.adjacenciesList = []
+        self.minDistance = sys.maxsize
+    #End procedure
+
+    def __cmp__(self, otherVertex):
+        return self.cmp(self.minDistance, otherVertex.minDistance)
+    #End procedure
+    
+
+    def __lt__(self, other):
+        selfPriority = self.minDistance
+        otehrPriority = other.minDistance
+        return selfPriority < otherPriority
+    #End procedure
+
+class Edge(object):
+
+    def __init__(self, weight, startVertex, targetVertex):
+        super().__init__()
+        self.weight = weight
+        self.startVertex = startVertex
+        self.targetVertex = targetVertex
+    #End procedure
+
+def calculateShortestPath(self, vertexList, startVertex):
+    queue = []
+    startVertex.minDistance = 0
+    heapq.heappush(queue, startVertex)
+    
+    while len(queue)>0:
         
+        actualVertex = heapq.heappop(queue)
+        
+        for edge in actualVertex.adjacenciesList:
+            u = edge.startVertex
+            v = edge.targetVertex
+            newDistance = u.minDistance + edge.weight
+
+            if newDistance < v.minDistance:
+                v.predecessor = u
+                v.minDistance = newDistance
+                heapq.heappush(queue, v)
+            
+def getShortestPathTo(self, targetVertex):
+    print("Shortest path to target is: ", targetVertex.minDistance)
+    node = targetVertex
+
+    while node is not None
+        print("%s -> " % node.name)
+        node = node.predecessor
+
 
 # -- Initialise PyGame
 pygame.init()
@@ -102,8 +160,10 @@ wall_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 all_sprites_group = pygame.sprite.Group()
 
-f = open("maze.txt","rt")
+f = open("nodeMaze.txt","rt")
 y_position = 0
+node_count = 0
+vertex_count = 0
 for line in f:
     x_position = 0
     for item in line:
@@ -113,6 +173,8 @@ for line in f:
             wall.rect.y = y_position
             wall_group.add(wall)
             all_sprites_group.add(wall)
+        elif item == "n"
+            node[node_count] = Vertex(vertex_count)
         #End if
         x_position += 30
     #Next item
