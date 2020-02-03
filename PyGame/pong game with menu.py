@@ -1,3 +1,5 @@
+### SRC - Some great code here
+
 import pygame
 
 game_over = False
@@ -8,6 +10,7 @@ def draw_text(surf, text, size, x, y):
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
+### SRC - End Procedure
 
 def text_objects_red(text, font):
     textSurface = font.render(text, True, RED)
