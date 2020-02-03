@@ -101,13 +101,14 @@ class Ghost(pygame.sprite.Sprite):
         for block in block_hit_list:
             # If we are moving right, set our right side to the left side of
             # the item we hit
-            if self.rect.x > 0:
+            if self.change_x > 0:
                 self.rect.right = block.rect.left
             else:
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
             #End if
         #Next block
+ 
  
         # Check and see if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.walls, False)
@@ -155,6 +156,7 @@ game_over = False
 wall_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 all_sprites_group = pygame.sprite.Group()
+ghost_sprites_group = pygame.sprite.Group()
 
 f = open("Maze.txt","rt")
 y_position = 0
@@ -181,7 +183,7 @@ player.walls = wall_group
 all_sprites_group.add(player)
 player_group.add(player)
 ghost = Ghost(30, RED)
-all_sprites_group.add(ghost)
+ghost_sprites_group.add(ghost)
 
 
 ### -- Game Loop
@@ -214,7 +216,7 @@ while not game_over:
 
     #Calls update() method on every sprite
     all_sprites_group.update()
-            
+    ghost_sprites_group.update()
             
     # -- Game logic goes after this comment
 
@@ -224,6 +226,7 @@ while not game_over:
 
     # -- Draw here
     all_sprites_group.draw(screen)
+    ghost_sprites_group.draw(screen)
     
 
     
