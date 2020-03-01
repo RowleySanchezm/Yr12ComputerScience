@@ -7,7 +7,7 @@ class Game:
         self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
-        self.enemies = []
+        self.enemies = [Knight()]
         self.towers = []
         self.lives = 10
         self.money = 100
@@ -18,10 +18,20 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            clock.tick(60)
+            clock.tick(30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+
+            #Deleting enemies off the screen
+            to_del = []
+            for enemy in self.enemies:
+                if enemy.x < 1105:
+                    to_del.append(enemy)
+
+            for d in to_del:
+                self.enemies.remove(d)
+
 
             self.draw()
             
@@ -30,30 +40,34 @@ class Game:
 
     def draw(self):
         self.win.blit(self.background, (0,0))
+
+        #draw enemies
+        for enemy in self.enemies:
+            enemy.draw(self.win)
+        
         pygame.display.update()
 
 class Enemy:
     imgs = []
     
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+    def __init__(self):
+        self.width = 64
+        self.height = 64
         self.animation_count = 0
         self.health = 1
         self.velocity = 3
-        self.path = [(1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (401, 328), (438, 355), (481, 370), (528, 390), (554, 428), (563, 461), (572, 500), (586, 546), (622, 575), (667, 583), (724, 582), (1026, 584), (1095, 582)]
+        self.path = [(1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (401, 328), (438, 355), (481, 370), (528, 390), (554, 428), (563, 461), (572, 500), (586, 546), (622, 575), (667, 583), (724, 582), (1026, 584), (1095, 582), (1150,582)]
+        self.x = self.path[0][0]
+        self.y = self.path [0][1]
         self.img = None
         self.path_pos = 0
         self.move_count = 0
         self.distance = 0
 
     def draw(self, win):
+        self.img = self.imgs[self.animation_count//3]
         self.animation_count += 1
-        self.img = self.imgs[self.animation_count]
-        
-        if self.animation_count >= len(self.imgs):
+        if self.animation_count >= len(self.imgs)*3:
             self.animation_count = 0
             
         win.blit(self.img, (self.x, self.y))
@@ -80,21 +94,36 @@ class Enemy:
         move_x, move_y = (self.x + direction[0] * self.move_count, self.y + direction[1] * self.move_count)
         self.distance += math.sqrt((move_x-x1)**2 + (move_y-y1)**2)
 
+        #Move point
         if self.distance >= move_distance:
             self.distance = 0
             self.move_count = 0
             self.path_pos += 1
-        
+            if self.path_pos >= len(self.path):
+                return False
 
         self.x = move_x
-        self.y = move_ y
+        self.y = move_y
+        return True 
 
-            
 
     def hit(self):
         self.health -= 1
         if self.health <= 0:
             return True
+
+class Knight(Enemy):
+    imgs = []
+
+    for x in range(20):
+        add_str = str(x)
+        if x < 10:
+            add_str = "0" + add_str
+
+        imgs.append(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")))
+
+    def __init__(self):
+        super().__init__()
 
 
 g = Game()
