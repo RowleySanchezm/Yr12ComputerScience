@@ -3,7 +3,7 @@ import os
 
 class Game:
     def __init__(self):
-        self.width = 1000
+        self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
@@ -11,6 +11,7 @@ class Game:
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
+        self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.clicks = []
 
     def run(self):
@@ -26,7 +27,7 @@ class Game:
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.clicks.append(pos)
-                    print(pos)
+                    print(self.clicks)
                     
 
             self.draw()
@@ -50,7 +51,7 @@ class Enemy:
         self.height = height
         self.animation_count = 0
         self.health = 1
-        self.path = []
+        self.path = [(1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (401, 328), (438, 355), (481, 370), (528, 390), (554, 428), (563, 461), (572, 500), (586, 546), (622, 575), (667, 583), (724, 582), (1026, 584), (1095, 582)]
         self.img = None
 
     def draw(self, win):
