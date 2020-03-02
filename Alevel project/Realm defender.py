@@ -7,7 +7,7 @@ class Game:
         self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
-        self.enemies = [Knight()]
+        self.enemies = [Knight(), Battleaxe()]
         self.towers = []
         self.lives = 10
         self.money = 100
@@ -125,6 +125,18 @@ class Knight(Enemy):
     def __init__(self):
         super().__init__()
 
+
+class Battleaxe(Enemy):
+    imgs = []
+
+    for x in range(20):
+        add_str = str(x)
+        if x < 10:
+            add_str = "0" + add_str
+        imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+
+    def __init__(self):
+        super().__init__()
 
 g = Game()
 g.run()
