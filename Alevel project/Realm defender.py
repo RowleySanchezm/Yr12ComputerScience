@@ -7,7 +7,7 @@ class Game:
         self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
-        self.enemies = [Knight(), Battleaxe(), Swordsman()]
+        self.enemies = [Knight()]
         self.towers = []
         self.lives = 10
         self.money = 100
@@ -18,8 +18,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            pygame.time.delay(500)
-            clock.tick(30)
+            clock.tick(60)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -54,13 +53,12 @@ class Enemy:
         self.height = 64
         self.animation_count = 0
         self.health = 1
-        self.velocity = 3
+        self.velocity = 8
         self.path = [(1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (401, 328), (438, 355), (481, 370), (528, 390), (554, 428), (563, 461), (572, 500), (586, 546), (622, 575), (667, 583), (724, 582), (1026, 584), (1095, 582), (1150,582)]
         self.x = self.path[0][0]
         self.y = self.path [0][1]
         self.img = None
         self.path_pos = 0
-        self.move_count = 0
         self.distance = 0
         self.imgs = []
         self.flipped = False
@@ -87,31 +85,37 @@ class Enemy:
         else:
             x2, y2 = self.path[self.path_pos+1]
 
-        move_distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
-        
-        self.move_count += 1
         direction = (x2-x1, y2-y1)
+        length = math.sqrt((direction[0])**2 + (direction[1])**2)
+        direction = (direction[0]/length, direction[1]/length)
 
         #Flips the image if it's moving in the positive x direction so it looks like it's walking in the correct direction
-        if direction[0] < 0:
+        if direction[0] < 0 and not(self.flipped):
+            self.flipped = True
             for x, img in enumerate(self.imgs):
                 self.imgs[x] = pygame.transform.flip(img, True, False)
             
         
-        move_x, move_y = ((self.x + direction[0] * self.move_count), (self.y + direction[1] * self.move_count))
-        self.distance += math.sqrt((move_x-x1)**2 + (move_y-y1)**2)
+        move_x, move_y = ((self.x + direction[0]), (self.y + direction[1]))
 
         self.x = move_x
         self.y = move_y
 
         #Move point
-        if self.distance >= move_distance:
-            self.distance = 0
-            self.move_count = 0
-            self.path_pos += 1
-            if self.path_pos >= len(self.path):
-                return False
-        return True 
+        if direction[0] >= 0:
+            if direction[1] >= 0:
+                if self.x >= x2 and self.y >= y2:
+                    self.path_pos += 1
+            else:
+                if self.x >= x2 and self.y <= y2:
+                    self.path_pos += 1
+        else:
+            if direction[1] >= 0:
+                if self.x <= x2 and self.y >= y2:
+                    self.path_pos += 1
+            else:
+                if self.x <= x2 and self.y <= y2:
+                    self.path_pos += 1
 
 
     def hit(self):
