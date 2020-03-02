@@ -49,8 +49,6 @@ class Game:
         pygame.display.update()
 
 class Enemy:
-    imgs = []
-    
     def __init__(self):
         self.width = 64
         self.height = 64
@@ -64,6 +62,8 @@ class Enemy:
         self.path_pos = 0
         self.move_count = 0
         self.distance = 0
+        self.imgs = []
+        self.flipped = False
 
     def draw(self, win):
         self.img = self.imgs[self.animation_count]
@@ -91,9 +91,18 @@ class Enemy:
         
         self.move_count += 1
         direction = (x2-x1, y2-y1)
+
+        #Flips the image if it's moving in the positive x direction so it looks like it's walking in the correct direction
+        if direction[0] < 0:
+            for x, img in enumerate(self.imgs):
+                self.imgs[x] = pygame.transform.flip(img, True, False)
+            
         
         move_x, move_y = ((self.x + direction[0] * self.move_count), (self.y + direction[1] * self.move_count))
         self.distance += math.sqrt((move_x-x1)**2 + (move_y-y1)**2)
+
+        self.x = move_x
+        self.y = move_y
 
         #Move point
         if self.distance >= move_distance:
@@ -102,9 +111,6 @@ class Enemy:
             self.path_pos += 1
             if self.path_pos >= len(self.path):
                 return False
-
-        self.x = move_x
-        self.y = move_y
         return True 
 
 
@@ -114,42 +120,39 @@ class Enemy:
             return True
 
 class Knight(Enemy):
-    imgs = []
-
-    for x in range(20):
-        add_str = str(x)
-        if x < 10:
-            add_str = "0" + add_str
-        imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (64, 64)))
-
     def __init__(self):
         super().__init__()
+        self.imgs = []
+
+        for x in range(20):
+            add_str = str(x)
+            if x < 10:
+                add_str = "0" + add_str
+            self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (64, 64)))
 
 
 class Battleaxe(Enemy):
-    imgs = []
-
-    for x in range(20):
-        add_str = str(x)
-        if x < 10:
-            add_str = "0" + add_str
-        imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
-
     def __init__(self):
         super().__init__()
+        self.imgs = []
+
+        for x in range(20):
+            add_str = str(x)
+            if x < 10:
+                add_str = "0" + add_str
+            self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
 
 
 class Swordsman(Enemy):
-    imgs = []
-
-    for x in range(20):
-        add_str = str(x)
-        if x < 10:
-            add_str = "0" + add_str
-        imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
-
     def __init__(self):
         super().__init__()
+        self.imgs = []
+
+        for x in range(20):
+            add_str = str(x)
+            if x < 10:
+                add_str = "0" + add_str
+            self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
 
 g = Game()
 g.run()
