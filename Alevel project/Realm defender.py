@@ -18,6 +18,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
+            pygame.time.delay(100)
             clock.tick(30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -90,11 +91,9 @@ class Enemy:
         
         self.move_count += 1
         direction = (x2-x1, y2-y1)
-        length = math.sqrt(direction[0]**2 + direction[1]**2)
-        direction = (direction[0]/length, direction[1]/length)
         
         move_x, move_y = ((self.x + direction[0] * self.move_count), (self.y + direction[1] * self.move_count))
-        self.distance += (math.sqrt((move_x-x1)**2 + (move_y-y1)**2))
+        self.distance += math.sqrt((move_x-x1)**2 + (move_y-y1)**2)
 
         #Move point
         if self.distance >= move_distance:
