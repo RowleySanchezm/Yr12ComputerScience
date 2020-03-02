@@ -26,7 +26,7 @@ class Game:
             #Deleting enemies off the screen
             to_del = []
             for enemy in self.enemies:
-                if enemy.x < 1105:
+                if enemy.x > 1105:
                     to_del.append(enemy)
 
             for d in to_del:
@@ -80,7 +80,7 @@ class Enemy:
         return False
 
     def move(self):
-        x1, y2 = self.path[self.path_pos]
+        x1, y1 = self.path[self.path_pos]
         if self.path_pos + 1 >= len(self.path):
             x2, y2 = (1120, 582)
         else:
@@ -90,9 +90,11 @@ class Enemy:
         
         self.move_count += 1
         direction = (x2-x1, y2-y1)
+        length = math.sqrt(direction[0]**2 + direction[1]**2)
+        direction = (direction[0]/length, direction[1]/length)
         
-        move_x, move_y = (self.x + direction[0] * self.move_count, self.y + direction[1] * self.move_count)
-        self.distance += math.sqrt((move_x-x1)**2 + (move_y-y1)**2)
+        move_x, move_y = ((self.x + direction[0] * self.move_count), (self.y + direction[1] * self.move_count))
+        self.distance += (math.sqrt((move_x-x1)**2 + (move_y-y1)**2))
 
         #Move point
         if self.distance >= move_distance:
@@ -119,8 +121,7 @@ class Knight(Enemy):
         add_str = str(x)
         if x < 10:
             add_str = "0" + add_str
-
-        imgs.append(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")))
+        imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (64, 64)))
 
     def __init__(self):
         super().__init__()
