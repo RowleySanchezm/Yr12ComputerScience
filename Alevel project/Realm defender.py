@@ -7,7 +7,7 @@ class Game:
         self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
-        self.enemies = [Knight(), Battleaxe()]
+        self.enemies = [Knight(), Battleaxe(), Swordsman()]
         self.towers = []
         self.lives = 10
         self.money = 100
@@ -18,7 +18,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            pygame.time.delay(100)
+            pygame.time.delay(500)
             clock.tick(30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -66,9 +66,9 @@ class Enemy:
         self.distance = 0
 
     def draw(self, win):
-        self.img = self.imgs[self.animation_count//3]
+        self.img = self.imgs[self.animation_count]
         self.animation_count += 1
-        if self.animation_count >= len(self.imgs)*3:
+        if self.animation_count >= len(self.imgs):
             self.animation_count = 0
             
         win.blit(self.img, (self.x, self.y))
@@ -134,6 +134,19 @@ class Battleaxe(Enemy):
         if x < 10:
             add_str = "0" + add_str
         imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+
+    def __init__(self):
+        super().__init__()
+
+
+class Swordsman(Enemy):
+    imgs = []
+
+    for x in range(20):
+        add_str = str(x)
+        if x < 10:
+            add_str = "0" + add_str
+        imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
 
     def __init__(self):
         super().__init__()
