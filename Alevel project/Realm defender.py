@@ -7,7 +7,7 @@ class Game:
         self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
-        self.enemies = [Knight()]
+        self.enemies = [Battleaxe()]
         self.towers = []
         self.lives = 10
         self.money = 100
@@ -18,7 +18,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            clock.tick(60)
+            clock.tick(80)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -26,7 +26,7 @@ class Game:
             #Deleting enemies off the screen
             to_del = []
             for enemy in self.enemies:
-                if enemy.x > 1105:
+                if enemy.x > 1130:
                     to_del.append(enemy)
 
             for d in to_del:
@@ -54,7 +54,7 @@ class Enemy:
         self.animation_count = 0
         self.health = 1
         self.velocity = 8
-        self.path = [(1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (401, 328), (438, 355), (481, 370), (528, 390), (554, 428), (563, 461), (572, 500), (586, 546), (622, 575), (667, 583), (724, 582), (1026, 584), (1095, 582), (1150,582)]
+        self.path = [(1110, 142), (1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (401, 328), (438, 355), (481, 370), (528, 390), (554, 428), (563, 461), (572, 500), (586, 546), (622, 575), (667, 583), (724, 582), (1026, 584), (1095, 582), (1150,582)]
         self.x = self.path[0][0]
         self.y = self.path [0][1]
         self.img = None
@@ -69,7 +69,7 @@ class Enemy:
         if self.animation_count >= len(self.imgs):
             self.animation_count = 0
             
-        win.blit(self.img, (self.x, self.y))
+        win.blit(self.img, (self.x - self.img.get_width()/2, self.y - self.img.get_height()/2))
         self.move()
 
     def collide(self, X, Y):
