@@ -18,7 +18,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            clock.tick(80)
+            clock.tick(140)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -54,7 +54,7 @@ class Enemy:
         self.animation_count = 0
         self.health = 1
         self.velocity = 8
-        self.path = [(1110, 142), (1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (401, 328), (438, 355), (481, 370), (528, 390), (554, 428), (563, 461), (572, 500), (586, 546), (622, 575), (667, 583), (724, 582), (1026, 584), (1095, 582), (1150,582)]
+        self.path = [(1110, 142), (1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (450, 328), (480, 340), (540, 350), (570, 390), (600, 448), (620, 500), (620, 560), (620, 561), (622, 562), (667, 563), (724, 563), (1026, 563), (1095, 563), (1150,563)]
         self.x = self.path[0][0]
         self.y = self.path [0][1]
         self.img = None
@@ -70,9 +70,9 @@ class Enemy:
             self.animation_count = 0
 
         for dot in self.path:
-            pygame.draw.circle(win, (255,0,0), dot, 10, 0)
+           pygame.draw.circle(win, (255,0,0), dot, 10, 0)
             
-        win.blit(self.img, (self.x - self.img.get_width()/2, self.y - self.img.get_height()/2))
+        win.blit(self.img, (self.x - self.img.get_width()/2, self.y - self.img.get_height()/2 - 20))
         self.move()
 
     def collide(self, X, Y):
@@ -117,7 +117,7 @@ class Enemy:
                 if self.x <= x2 and self.y >= y2:
                     self.path_pos += 1
             else:
-                if self.x <= x2 and self.y <= y2:
+                if self.x <= x2 and self.y >= y2:
                     self.path_pos += 1
 
 
