@@ -161,5 +161,63 @@ class Swordsman(Enemy):
                 add_str = "0" + add_str
             self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
 
+
+class Tower:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 0
+        self.height = 0
+        self.sell_price = [0, 0, 0]
+        self.price = [0, 0, 0]
+        self.level = 1
+        self.selected = False
+        self.menu = None
+        self.tower_imgs = []
+
+    def draw(self, win):
+        img = self.tower_imgs[self.level-1]
+        win.blit(img, (self.x-img.get_width()//2, self.y-img.get_height()//2))
+
+    def click(self, X, Y):
+        if X <= self.x + self.width and X >= self.x:
+            if Y <= self.y + self.height and Y >= self.y:
+                return True
+        return False
+
+    def sell(self):
+        return self.sell_price[self.level-1]
+
+    def upgrade(self):
+        self.level += 1
+
+    def upgrade_cost(self):
+        return self.price[self.level-1]
+
+    def move(self, x, y):
+        self.x = x
+        self.y = y
+
+class ArcherTower(Tower):
+    def __init__(self, x, y):
+        super().__init__(self, x, y)
+        self.tower_imgs = []
+        self.archer_imgs = []
+        self.archer_count = 0
+
+        for x in range(7,10):
+            self.tower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (64, 64)))
+
+        for x in range(7,10):
+            self.tower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (64, 64)))
+
+
+    def draw(self, win):
+        super().draw(win)
+
+    def attack(self, enemies):
+        
+
+
 g = Game()
 g.run()
