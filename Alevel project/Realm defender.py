@@ -8,7 +8,7 @@ class Game:
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = [Battleaxe()]
-        self.towers = []
+        self.towers = [ArcherTower(250,250)]
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
@@ -44,6 +44,10 @@ class Game:
         #draw enemies
         for enemy in self.enemies:
             enemy.draw(self.win)
+
+        #draw towers
+        for towers in self.towers:
+            towers.draw(self.win)
         
         pygame.display.update()
 
@@ -200,23 +204,31 @@ class Tower:
 
 class ArcherTower(Tower):
     def __init__(self, x, y):
-        super().__init__(self, x, y)
+        super().__init__(x, y)
         self.tower_imgs = []
         self.archer_imgs = []
         self.archer_count = 0
 
+        #Archer tower
         for x in range(7,10):
             self.tower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (64, 64)))
 
-        for x in range(7,10):
-            self.tower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (64, 64)))
+        #Archer character
+        for x in range(37,43):
+            self.archer_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (64, 64)))
 
 
     def draw(self, win):
         super().draw(win)
+        if self.archer_count >= len(self.archer_imgs):
+            self.archer_count = 0
+
+        archer = self.archer_imgs[self.archer_count]
+        win.blit(archer, ((self.x + self.width/2) -(archer.get_width()/2)), (self.y - archer.get_height()))
+        self.archer_count += 1
 
     def attack(self, enemies):
-        
+        pass
 
 
 g = Game()
