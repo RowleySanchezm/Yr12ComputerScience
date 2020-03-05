@@ -224,7 +224,7 @@ class ArcherTower(Tower):
             self.archer_count = 0
 
         archer = self.archer_imgs[self.archer_count]
-        win.blit(archer, ((self.x + self.width/2) -(archer.get_width()/2)), (self.y - archer.get_height()))
+        win.blit(archer, ((self.x + self.width//2) - (archer.get_width()//2), (self.y - archer.get_height())))
         self.archer_count += 1
 
     def attack(self, enemies):
