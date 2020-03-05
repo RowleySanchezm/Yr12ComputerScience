@@ -7,7 +7,7 @@ class Game:
         self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
-        self.enemies = [Battleaxe()]
+        self.enemies = [Swordsman()]
         self.towers = [ArcherTower(250,250)]
         self.lives = 10
         self.money = 100
@@ -72,9 +72,6 @@ class Enemy:
         self.animation_count += 1
         if self.animation_count >= len(self.imgs):
             self.animation_count = 0
-
-        for dot in self.path:
-           pygame.draw.circle(win, (255,0,0), dot, 10, 0)
             
         win.blit(self.img, (self.x - self.img.get_width()/2, self.y - self.img.get_height()/2 - 20))
         self.move()
@@ -211,20 +208,20 @@ class ArcherTower(Tower):
 
         #Archer tower
         for x in range(7,10):
-            self.tower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (64, 64)))
+            self.tower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (90, 90)))
 
         #Archer character
-        for x in range(37,43):
-            self.archer_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (64, 64)))
+        for x in range(38,43):
+            self.archer_imgs.append(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")))
 
 
     def draw(self, win):
         super().draw(win)
-        if self.archer_count >= len(self.archer_imgs):
+        if self.archer_count >= len(self.archer_imgs)*3:
             self.archer_count = 0
 
-        archer = self.archer_imgs[self.archer_count]
-        win.blit(archer, ((self.x + self.width//2) - (archer.get_width()//2), (self.y - archer.get_height())))
+        archer = self.archer_imgs[self.archer_count//3]
+        win.blit(archer, ((self.x + self.width//2 - 30), (self.y - archer.get_height() - 30)))
         self.archer_count += 1
 
     def attack(self, enemies):
