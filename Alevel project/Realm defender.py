@@ -215,6 +215,7 @@ class ArcherTower(Tower):
         self.archer_count = 0
         self.range = 200
         self.in_range = False
+        self.left = True
 
         #Archer tower
         for x in range(7,10):
@@ -259,7 +260,19 @@ class ArcherTower(Tower):
                 self.in_range = True
                 enemy_closest.append(enemy)
 
-        #if 
+        enemy_closest.sort(key=lambda x: x.x)
+        if len(enemy_closest) > 0:
+            first_enemy = enemy_closest[0]
+
+            if first_enemy.x < self.x and not(self.left):
+                self.left = True
+                for x, img in enumerate(self.archer_imgs):
+                    self.archer_imgs[x] = pygame.transform.flip(img, True, False)
+            elif self.left:
+                self.left = False
+                for x, img in enumerate(self.archer_imgs):
+                    self.archer_imgs[x] = pygame.transform.flip(img, True, False)
+
 
 g = Game()
 g.run()
