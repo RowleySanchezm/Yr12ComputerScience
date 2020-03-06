@@ -8,7 +8,7 @@ class Game:
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = [Swordsman()]
-        self.towers = [ArcherTower(280,250)]
+        self.towers = [ArcherTower(480,250)]
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
@@ -226,6 +226,11 @@ class ArcherTower(Tower):
 
 
     def draw(self, win):
+        #Show range of tower (translucent)
+        surface = pygame.Surface((self.range*4, self.range*4), pygame.SRCALPHA, 32)
+        pygame.draw.circle(surface, (255,135,135, 60), (self.range, self.range), self.range, 0)
+        win.blit(surface, (self.x - self.range, self.y - self.range))
+
         super().draw(win)
 
         if self.in_range == True:
@@ -253,6 +258,8 @@ class ArcherTower(Tower):
             if distance < self.range:
                 self.in_range = True
                 enemy_closest.append(enemy)
+
+        #if 
 
 g = Game()
 g.run()
