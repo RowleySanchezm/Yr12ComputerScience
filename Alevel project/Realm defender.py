@@ -98,6 +98,10 @@ class Enemy:
             self.flipped = True
             for x, img in enumerate(self.imgs):
                 self.imgs[x] = pygame.transform.flip(img, True, False)
+        elif direction[0] > 0 and self.flipped == True:
+            self.flipped = False
+            for x, img in enumerate(self.imgs):
+                self.imgs[x] = pygame.transform.flip(img, True, False)
             
         
         move_x, move_y = ((self.x + direction[0]), (self.y + direction[1]))
