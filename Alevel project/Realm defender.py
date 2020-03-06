@@ -264,11 +264,11 @@ class ArcherTower(Tower):
         if len(enemy_closest) > 0:
             first_enemy = enemy_closest[0]
 
-            if first_enemy.x < self.x and not(self.left):
+            if first_enemy.x > self.x and not(self.left):
                 self.left = True
                 for x, img in enumerate(self.archer_imgs):
                     self.archer_imgs[x] = pygame.transform.flip(img, True, False)
-            elif self.left:
+            elif self.left and first_enemy.x < self.x:
                 self.left = False
                 for x, img in enumerate(self.archer_imgs):
                     self.archer_imgs[x] = pygame.transform.flip(img, True, False)
