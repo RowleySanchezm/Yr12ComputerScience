@@ -205,6 +205,8 @@ class ArcherTower(Tower):
         self.tower_imgs = []
         self.archer_imgs = []
         self.archer_count = 0
+        self.range = 50
+        self.in_range = False
 
         #Archer tower
         for x in range(7,10):
@@ -221,12 +223,18 @@ class ArcherTower(Tower):
             self.archer_count = 0
 
         archer = self.archer_imgs[self.archer_count//3]
-        win.blit(archer, ((self.x + self.width//2 - 30), (self.y - archer.get_height() - 30)))
+        win.blit(archer, ((self.x + self.width//2 - 25), (self.y - archer.get_height() - 25)))
         self.archer_count += 1
 
-    def attack(self, enemies):
-        pass
+    def change_range(self, r):
+        self.range = r
 
+    #def attack(self, enemies):
+        for enemy in enemies:
+            x = enemy.x
+            y = enemy.y
+
+            distance = math.sqrt((self.x - x)**2)
 
 g = Game()
 g.run()
