@@ -87,8 +87,8 @@ class Enemy:
         move_by = round(length / self.max_health)
         health_bar = move_by * self.health
 
-        pygame.draw.rect(win, (255,0,0), (self.x - 20, self.y - 70, length, 10), 0)
-        pygame.draw.rect(win, (0,255,0), (self.x - 20, self.y - 70, health_bar, 10), 0)
+        pygame.draw.rect(win, (255,0,0), (self.x - 15, self.y - 55, length, 10), 0)
+        pygame.draw.rect(win, (0,255,0), (self.x - 15, self.y - 55, health_bar, 10), 0)
 
     def collide(self, X, Y):
         if X <= self.x + self.width and X >= self.x:
