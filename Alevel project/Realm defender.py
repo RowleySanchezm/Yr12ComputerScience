@@ -243,7 +243,11 @@ class ArcherTower(Tower):
             self.archer_count = 0
             
         archer = self.archer_imgs[self.archer_count//3]
-        win.blit(archer, ((self.x + self.width//2 - 25), (self.y - archer.get_height() - 25)))
+        if self.left == True:
+            add = -25
+        else:
+            add = -archer.get_width() + 10
+        win.blit(archer, ((self.x + self.width//2 + add), (self.y - archer.get_height() - 25)))
 
     def change_range(self, r):
         self.range = r
