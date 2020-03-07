@@ -286,7 +286,7 @@ class ArcherTower(Tower):
         enemy_closest.sort(key=lambda x: x.x)
         if len(enemy_closest) > 0:
             first_enemy = enemy_closest[0]
-            if self.time.time() - self.timer >= 0.5:
+            if time.time() - self.timer >= 0.5:
                 self.timer = time.time()
                 if first_enemy.hit() == True:
                     enemies.remove(first_enemy)
