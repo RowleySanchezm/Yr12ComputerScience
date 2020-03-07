@@ -2,23 +2,29 @@ import pygame
 import os
 import math
 import time
+import random
 
 class Game:
     def __init__(self):
         self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
-        self.enemies = [Swordsman()]
+        self.enemies = [Battleaxe()]
         self.towers = [ArcherTower(480,250)]
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
+        self.timer = time.time()
 
     def run(self):
         run = True
         clock = pygame.time.Clock()
         while run:
+            if time.time() - self.timer >= 2:
+                self.timer = time.time()
+                self.enemies.append(random.choice([Knight(), Swordsman(), Battleaxe()]))
+                
             clock.tick(140)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
