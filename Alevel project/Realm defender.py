@@ -70,6 +70,7 @@ class Enemy:
         self.distance = 0
         self.imgs = []
         self.flipped = False
+        self.max_health = 0
 
     def draw(self, win):
         self.img = self.imgs[self.animation_count]
@@ -78,7 +79,16 @@ class Enemy:
             self.animation_count = 0
             
         win.blit(self.img, (self.x - self.img.get_width()/2, self.y - self.img.get_height()/2 - 20))
+        self.draw_health_bar(win)
         self.move()
+
+    def draw_health_bar(self, win):
+        length = 50
+        move_by = round(length / self.max_health)
+        health_bar = move_by * self.health
+
+        pygame.draw.rect(win, (255,0,0), (self.x - 20, self.y - 70, length, 10), 0)
+        pygame.draw.rect(win, (0,255,0), (self.x - 20, self.y - 70, health_bar, 10), 0)
 
     def collide(self, X, Y):
         if X <= self.x + self.width and X >= self.x:
@@ -139,6 +149,8 @@ class Knight(Enemy):
     def __init__(self):
         super().__init__()
         self.imgs = []
+        self.max_health = 1
+        self.health = self.max_health
 
         for x in range(20):
             add_str = str(x)
@@ -151,6 +163,8 @@ class Battleaxe(Enemy):
     def __init__(self):
         super().__init__()
         self.imgs = []
+        self.max_health = 5
+        self.health = self.max_health
 
         for x in range(20):
             add_str = str(x)
@@ -163,6 +177,8 @@ class Swordsman(Enemy):
     def __init__(self):
         super().__init__()
         self.imgs = []
+        self.max_health = 3
+        self.health = self.max_health
 
         for x in range(20):
             add_str = str(x)
