@@ -124,7 +124,7 @@ class Enemy:
                 self.imgs[x] = pygame.transform.flip(img, True, False)
             
         
-        move_x, move_y = ((self.x + direction[0]), (self.y + direction[1]))
+        move_x, move_y = ((self.x + (direction[0]*2)), (self.y + (direction[1]*2)))
 
         self.x = move_x
         self.y = move_y
