@@ -25,7 +25,7 @@ class Game:
                 self.timer = time.time()
                 self.enemies.append(random.choice([Knight(), Swordsman(), Battleaxe()]))
                 
-            clock.tick(120)
+            clock.tick(200)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -153,6 +153,7 @@ class Enemy:
         return False
 
 
+
 Knight_imgs = []
 
 for x in range(20):
@@ -169,6 +170,7 @@ class Knight(Enemy):
         self.imgs = Knight_imgs[:]
         
 
+
 Battleaxe_imgs = []
 
 for x in range(20):
@@ -184,6 +186,7 @@ class Battleaxe(Enemy):
         self.health = self.max_health
         self.imgs = Battleaxe_imgs[:]
         
+
 
 Swordsman_imgs = []
 
@@ -301,7 +304,7 @@ class ArcherTower(Tower):
         enemy_closest.sort(key=lambda x: x.x)
         if len(enemy_closest) > 0:
             first_enemy = enemy_closest[0]
-            if time.time() - self.timer >= 0.5:
+            if time.time() - self.timer >= 3:
                 self.timer = time.time()
                 if first_enemy.hit() == True:
                     enemies.remove(first_enemy)
