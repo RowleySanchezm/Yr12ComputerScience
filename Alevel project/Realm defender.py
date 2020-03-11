@@ -10,7 +10,7 @@ class Game:
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
-        self.towers = [ArcherTower(480,250), ArcherTower(850,500)]
+        self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490)]
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
@@ -242,26 +242,29 @@ class Tower:
         self.x = x
         self.y = y
 
-class ArcherTower(Tower):
+        
+tower_imgs = []
+archer_imgs = []
+#Archer tower image
+for x in range(7,10):
+    tower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (90, 90)))
+
+#Archer character image
+for x in range(38,44):
+    archer_imgs.append(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")))
+
+class PowerfulArcherTower(Tower):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.tower_imgs = []
-        self.archer_imgs = []
+        self.tower_imgs = tower_imgs[:]
+        self.archer_imgs = archer_imgs[:]
         self.archer_count = 0
         self.range = 200
         self.in_range = False
         self.left = True
         self.timer = time.time()
         self.damage = 1
-
-        #Archer tower
-        for x in range(7,10):
-            self.tower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (90, 90)))
-
-        #Archer character
-        for x in range(38,43):
-            self.archer_imgs.append(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")))
-
+        self.frequency = 3
 
     def draw(self, win):
         #Show range of tower (translucent)
@@ -304,7 +307,7 @@ class ArcherTower(Tower):
         enemy_closest.sort(key=lambda x: x.x)
         if len(enemy_closest) > 0:
             first_enemy = enemy_closest[0]
-            if time.time() - self.timer >= 3:
+            if time.time() - self.timer >= self.frequency:
                 self.timer = time.time()
                 if first_enemy.hit() == True:
                     enemies.remove(first_enemy)
@@ -317,6 +320,30 @@ class ArcherTower(Tower):
                 self.left = False
                 for x, img in enumerate(self.archer_imgs):
                     self.archer_imgs[x] = pygame.transform.flip(img, True, False)
+
+tower2_imgs = []
+archer2_imgs = []
+#Archer tower image
+for x in range(10,13):
+    tower2_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")), (90, 90)))
+
+#Archer character image
+for x in range(51,56):
+    archer2_imgs.append(pygame.image.load(os.path.join("Game_images/ArcherTowers", str(x) + ".png")))
+
+class QuickArcherTower(PowerfulArcherTower):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.tower_imgs = tower2_imgs[:]
+        self.archer_imgs = archer2_imgs[:]
+        self.archer_count = 0
+        self.range = 125
+        self.in_range = False
+        self.left = True
+        self.timer = time.time()
+        self.damage = 1
+        self.frequency = 6
+
 
 
 g = Game()
