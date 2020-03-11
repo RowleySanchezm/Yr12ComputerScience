@@ -10,7 +10,7 @@ class Game:
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
-        self.towers = [ArcherTower(480,250), ArcherTower(850,500)]
+        self.towers = []
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
@@ -153,52 +153,52 @@ class Enemy:
         return False
 
 
-knight_imgs = []
+imgs = []
 
 for x in range(20):
     add_str = str(x)
     if x < 10:
         add_str = "0" + add_str
-    knight_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (64, 64)))
             
 class Knight(Enemy):
     def __init__(self):
         super().__init__()
         self.max_health = 1
         self.health = self.max_health
-        self.imgs = knight_imgs
+        self.imgs = imgs[:]
         
 
-battleaxe_imgs = []
+imgs = []
 
 for x in range(20):
     add_str = str(x)
     if x < 10:
         add_str = "0" + add_str
-    battleaxe_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
     
 class Battleaxe(Enemy):
     def __init__(self):
         super().__init__()
         self.max_health = 5
         self.health = self.max_health
-        self.imgs = battleaxe_imgs
+        self.imgs = imgs[:]
         
 
-swordsman_imgs = []
+imgs = []
 
 for x in range(20):
     add_str = str(x)
     if x < 10:
         add_str = "0" + add_str
-    swordsman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
     
 class Swordsman(Enemy):
     def __init__(self):
         super().__init__()
         self.max_health = 3
         self.health = self.max_health
-        self.imgs = swordsman_imgs
+        self.imgs = imgs[:]
 
 
 class Tower:
