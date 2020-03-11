@@ -169,7 +169,7 @@ class Knight(Enemy):
         self.imgs = imgs[:]
         
 
-imgs = []
+#imgs = []
 
 for x in range(20):
     add_str = str(x)
@@ -185,7 +185,7 @@ class Battleaxe(Enemy):
         self.imgs = imgs[:]
         
 
-imgs = []
+#imgs = []
 
 for x in range(20):
     add_str = str(x)
