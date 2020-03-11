@@ -9,8 +9,8 @@ class Game:
         self.width = 1100
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
-        self.enemies = [Battleaxe()]
-        self.towers = [ArcherTower(480,250)]
+        self.enemies = []
+        self.towers = [ArcherTower(480,250), ArcherTower(850,500)]
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
@@ -21,11 +21,11 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            if time.time() - self.timer >= 2:
+            if time.time() - self.timer >= 4:
                 self.timer = time.time()
                 self.enemies.append(random.choice([Knight(), Swordsman(), Battleaxe()]))
                 
-            clock.tick(140)
+            clock.tick(120)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -68,7 +68,6 @@ class Enemy:
         self.height = 64
         self.animation_count = 0
         self.health = 1
-        self.velocity = 8
         self.path = [(1110, 142), (1078, 142), (485, 144), (418, 162), (394, 197), (379, 240), (380, 282), (450, 328), (480, 340), (540, 350), (570, 390), (600, 448), (620, 500), (620, 560), (620, 561), (622, 562), (667, 563), (724, 563), (1026, 563), (1095, 563), (1150,563)]
         self.x = self.path[0][0]
         self.y = self.path [0][1]
@@ -153,46 +152,53 @@ class Enemy:
             return True
         return False
 
+
+knight_imgs = []
+
+for x in range(20):
+    add_str = str(x)
+    if x < 10:
+        add_str = "0" + add_str
+    knight_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+            
 class Knight(Enemy):
     def __init__(self):
         super().__init__()
-        self.imgs = []
         self.max_health = 1
         self.health = self.max_health
+        self.imgs = knight_imgs
+        
 
-        for x in range(20):
-            add_str = str(x)
-            if x < 10:
-                add_str = "0" + add_str
-            self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+battleaxe_imgs = []
 
-
+for x in range(20):
+    add_str = str(x)
+    if x < 10:
+        add_str = "0" + add_str
+    battleaxe_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    
 class Battleaxe(Enemy):
     def __init__(self):
         super().__init__()
-        self.imgs = []
         self.max_health = 5
         self.health = self.max_health
+        self.imgs = battleaxe_imgs
+        
 
-        for x in range(20):
-            add_str = str(x)
-            if x < 10:
-                add_str = "0" + add_str
-            self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+swordsman_imgs = []
 
-
+for x in range(20):
+    add_str = str(x)
+    if x < 10:
+        add_str = "0" + add_str
+    swordsman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    
 class Swordsman(Enemy):
     def __init__(self):
         super().__init__()
-        self.imgs = []
         self.max_health = 3
         self.health = self.max_health
-
-        for x in range(20):
-            add_str = str(x)
-            if x < 10:
-                add_str = "0" + add_str
-            self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+        self.imgs = swordsman_imgs
 
 
 class Tower:
@@ -207,6 +213,7 @@ class Tower:
         self.selected = False
         self.menu = None
         self.tower_imgs = []
+        self.damage = 1
 
     def draw(self, win):
         img = self.tower_imgs[self.level-1]
@@ -223,6 +230,7 @@ class Tower:
 
     def upgrade(self):
         self.level += 1
+        self.damage += 1
 
     def upgrade_cost(self):
         return self.price[self.level-1]
@@ -241,6 +249,7 @@ class ArcherTower(Tower):
         self.in_range = False
         self.left = True
         self.timer = time.time()
+        self.damage = 1
 
         #Archer tower
         for x in range(7,10):
