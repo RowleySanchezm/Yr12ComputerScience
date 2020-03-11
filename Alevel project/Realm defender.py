@@ -52,13 +52,13 @@ class Game:
     def draw(self):
         self.win.blit(self.background, (0,0))
 
-        #draw enemies
-        for enemy in self.enemies:
-            enemy.draw(self.win)
-
         #draw towers
         for towers in self.towers:
             towers.draw(self.win)
+
+        #draw enemies
+        for enemy in self.enemies:
+            enemy.draw(self.win)
         
         pygame.display.update()
 
@@ -146,8 +146,8 @@ class Enemy:
                     self.path_pos += 1
 
 
-    def hit(self):
-        self.health -= 1
+    def hit(self, damage):
+        self.health -= damage
         if self.health <= 0:
             return True
         return False
@@ -309,7 +309,7 @@ class PowerfulArcherTower(Tower):
             first_enemy = enemy_closest[0]
             if time.time() - self.timer >= self.frequency:
                 self.timer = time.time()
-                if first_enemy.hit() == True:
+                if first_enemy.hit(self.damage) == True:
                     enemies.remove(first_enemy)
 
             if first_enemy.x > self.x and not(self.left):
