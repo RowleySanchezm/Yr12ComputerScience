@@ -379,7 +379,7 @@ for x in range(4,6):
 class RangeTower(Tower):
     def __init__(self, x, y):
         super().__init__(x,y)
-        self.radius = 150
+        self.range = 150
         self.effect = [0.2, 0.4]
         self.imgs = RangeTower_imgs
 
@@ -398,7 +398,7 @@ for x in range(7,9):
 class DamageTower(RangeTower):
     def __init__(self, x, y):
         super().__init__(x,y)
-        self.radius = 150
+        self.range = 150
         self.effect = [1, 2]
         self.imgs = DamageTower_imgs
 
