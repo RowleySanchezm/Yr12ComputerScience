@@ -262,7 +262,6 @@ class PowerfulArcherTower(Tower):
         self.range = 200
         self.in_range = False
         self.left = True
-        self.timer = time.time()
         self.damage = 1
         self.frequency = 3
 
@@ -307,8 +306,7 @@ class PowerfulArcherTower(Tower):
         enemy_closest.sort(key=lambda x: x.x)
         if len(enemy_closest) > 0:
             first_enemy = enemy_closest[0]
-            if time.time() - self.timer >= self.frequency:
-                self.timer = time.time()
+            if self.archer_count == 5:
                 if first_enemy.hit(self.damage) == True:
                     enemies.remove(first_enemy)
 
@@ -340,7 +338,6 @@ class QuickArcherTower(PowerfulArcherTower):
         self.range = 125
         self.in_range = False
         self.left = True
-        self.timer = time.time()
         self.damage = 1
         self.frequency = 6
 
