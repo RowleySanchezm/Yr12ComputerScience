@@ -69,7 +69,7 @@ class Game:
         start_x = self.width
         live = lives_img
         for x in range(self.lives):
-            self.win.blit(live, (start_x - live.get_width()*x - 40, 10))
+            self.win.blit(live, (10 + live.get_width()*x, 10))
         
         pygame.display.update()
 
