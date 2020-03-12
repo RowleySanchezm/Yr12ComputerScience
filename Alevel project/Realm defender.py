@@ -42,11 +42,16 @@ class Game:
                     to_del.append(enemy)
 
             for d in to_del:
+                self.lives -= 1
                 self.enemies.remove(d)
 
             #Loop through towers
             for tower in self.towers:
                 tower.attack(self.enemies)
+
+            if self.lives <= 0:
+                print("You lose")
+                run = False
 
 
             self.draw()
@@ -66,9 +71,9 @@ class Game:
             enemy.draw(self.win)
 
         #Draw game stats
-        live = pygame.transform.scale(lives_img,(28,28))
+        life = pygame.transform.scale(lives_img,(28,28))
         for x in range(self.lives):
-            self.win.blit(live, (10 + live.get_width()*x, 10))
+            self.win.blit(life, (10 + life.get_width()*x, 10))
         
         pygame.display.update()
 
