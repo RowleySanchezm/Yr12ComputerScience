@@ -4,6 +4,11 @@ import math
 import time
 import random
 
+
+lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
+star_img = pygame.image.load(os.path.join("Game_images/GameInterface","star.png"))
+
+
 class Game:
     def __init__(self):
         self.width = 1100
@@ -59,6 +64,12 @@ class Game:
         #draw enemies
         for enemy in self.enemies:
             enemy.draw(self.win)
+
+        #Draw game stats
+        start_x = self.width
+        live = lives_img
+        for x in range(self.lives):
+            self.win.blit(live, (start_x - live.get_width()*x - 40, 10))
         
         pygame.display.update()
 
