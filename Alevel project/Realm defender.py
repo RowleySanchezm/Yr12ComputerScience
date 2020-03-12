@@ -66,8 +66,7 @@ class Game:
             enemy.draw(self.win)
 
         #Draw game stats
-        start_x = self.width
-        live = lives_img
+        live = pygame.transform.scale(lives_img,(28,28))
         for x in range(self.lives):
             self.win.blit(live, (10 + live.get_width()*x, 10))
         
