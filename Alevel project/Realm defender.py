@@ -15,7 +15,8 @@ class Game:
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
-        self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490), RangeTower(540,250)]
+        self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490)]
+        self.support_towers = [RangeTower(540,250)]
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
@@ -50,6 +51,10 @@ class Game:
             for tower in self.towers:
                 tower.attack(self.enemies)
 
+            #Loop through support towers
+            for tower in self.support_towers:
+                tower.support(self.towers)
+
             if self.lives <= 0:
                 print("You lose")
                 run = False
@@ -63,11 +68,15 @@ class Game:
     def draw(self):
         self.win.blit(self.background, (0,0))
 
-        #draw towers
+        #Draw Towers
         for towers in self.towers:
             towers.draw(self.win)
 
-        #draw enemies
+        #Draw support Towers
+        for towers in self.support_towers:
+            towers.draw(self.win)
+
+        #Draw enemies
         for enemy in self.enemies:
             enemy.draw(self.win)
 
@@ -371,11 +380,15 @@ class RangeTower(Tower):
     def __init__(self, x, y):
         super().__init__(x,y)
         self.radius = 150
+        self.effect = [0.2, 0.4]
         self.imgs = RangeTower_imgs
 
     def draw(self, win):
         super().draw_radius(win)
         super().draw(win)
+
+    def support(self, towers):
+        pass
 
 
 DamageTower_imgs = []
@@ -386,7 +399,11 @@ class DamageTower(RangeTower):
     def __init__(self, x, y):
         super().__init__(x,y)
         self.radius = 150
+        self.effect = [1, 2]
         self.imgs = DamageTower_imgs
+
+    def support(self, towers):
+        pass
 
         
 
