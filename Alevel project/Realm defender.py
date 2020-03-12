@@ -381,7 +381,7 @@ class RangeTower(Tower):
         super().__init__(x,y)
         self.range = 150
         self.effect = [0.2, 0.4]
-        self.imgs = RangeTower_imgs
+        self.tower_imgs = RangeTower_imgs[:]
 
     def draw(self, win):
         super().draw_radius(win)
@@ -400,7 +400,7 @@ class DamageTower(RangeTower):
         super().__init__(x,y)
         self.range = 150
         self.effect = [1, 2]
-        self.imgs = DamageTower_imgs
+        self.tower_imgs = DamageTower_imgs[:]
 
     def support(self, towers):
         pass
