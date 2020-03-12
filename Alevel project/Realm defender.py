@@ -374,7 +374,7 @@ class QuickArcherTower(PowerfulArcherTower):
 
 RangeTower_imgs = []
 for x in range(4,6):
-    RangeTower_imgs.append(pygame.image.load(os.path.join("Game_images/SupportTowers", str(x) + ".png")))
+    RangeTower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/SupportTowers", str(x) + ".png")), (64,64)))
 
 class RangeTower(Tower):
     def __init__(self, x, y):
@@ -393,7 +393,7 @@ class RangeTower(Tower):
 
 DamageTower_imgs = []
 for x in range(7,9):
-    DamageTower_imgs.append(pygame.image.load(os.path.join("Game_images/SupportTowers", str(x) + ".png")))
+    DamageTower_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/SupportTowers", str(x) + ".png")), (64,64)))
     
 class DamageTower(RangeTower):
     def __init__(self, x, y):
