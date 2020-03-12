@@ -4,7 +4,7 @@ import math
 import time
 import random
 
-
+pygame.font.init()
 lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
 star_img = pygame.image.load(os.path.join("Game_images/GameInterface","star.png"))
 
@@ -15,12 +15,13 @@ class Game:
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
-        self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490)]
+        self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490), RangeTower(540,250)]
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.timer = time.time()
+        self.font = pygame.font.SysFont("comicsans", 70)
 
     def run(self):
         run = True
@@ -76,6 +77,9 @@ class Game:
             self.win.blit(life, (10 + life.get_width()*x, 10))
         
         pygame.display.update()
+
+    def draw_menu(self):
+        pass
 
 class Enemy:
     def __init__(self):
@@ -237,6 +241,12 @@ class Tower:
         img = self.tower_imgs[self.level-1]
         win.blit(img, (self.x-img.get_width()//2, self.y-img.get_height()//2))
 
+    def draw_radius(self, win):
+        #Show range of tower (translucent)
+        surface = pygame.Surface((self.range*4, self.range*4), pygame.SRCALPHA, 32)
+        pygame.draw.circle(surface, (255,135,135, 60), (self.range, self.range), self.range, 0)
+        win.blit(surface, (self.x - self.range, self.y - self.range))
+
     def click(self, X, Y):
         if X <= self.x + self.width and X >= self.x:
             if Y <= self.y + self.height and Y >= self.y:
@@ -281,11 +291,7 @@ class PowerfulArcherTower(Tower):
         self.frequency = 3
 
     def draw(self, win):
-        #Show range of tower (translucent)
-        surface = pygame.Surface((self.range*4, self.range*4), pygame.SRCALPHA, 32)
-        pygame.draw.circle(surface, (255,135,135, 60), (self.range, self.range), self.range, 0)
-        win.blit(surface, (self.x - self.range, self.y - self.range))
-
+        super().draw_radius(win)
         super().draw(win)
 
         if self.in_range == True:
@@ -355,6 +361,34 @@ class QuickArcherTower(PowerfulArcherTower):
         self.left = True
         self.damage = 1
         self.frequency = 6
+
+
+RangeTower_imgs = []
+for x in range(4,6):
+    RangeTower_imgs.append(pygame.image.load(os.path.join("Game_images/SupportTowers", str(x) + ".png")))
+
+class RangeTower(Tower):
+    def __init__(self, x, y):
+        super().__init__(x,y)
+        self.radius = 150
+        self.imgs = RangeTower_imgs
+
+    def draw(self, win):
+        super().draw_radius(win)
+        super().draw(win)
+
+
+DamageTower_imgs = []
+for x in range(7,9):
+    DamageTower_imgs.append(pygame.image.load(os.path.join("Game_images/SupportTowers", str(x) + ".png")))
+    
+class DamageTower(RangeTower):
+    def __init__(self, x, y):
+        super().__init__(x,y)
+        self.radius = 150
+        self.imgs = DamageTower_imgs
+
+        
 
 
 
