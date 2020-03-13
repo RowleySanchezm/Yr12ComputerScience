@@ -388,7 +388,17 @@ class RangeTower(Tower):
         super().draw(win)
 
     def support(self, towers):
-        pass
+        effected = []
+        for tower in towers:
+            x = tower.x
+            y = tower.y
+
+            distance = math.sqrt((self.x - x)**2 + (self.y - y)**2)
+            if distance <= self.range:
+                effected.append(tower)
+
+        for tower in effected:
+            tower.range += round(tower.range * self.effect[self.level - 1])
 
 
 DamageTower_imgs = []
@@ -403,7 +413,17 @@ class DamageTower(RangeTower):
         self.tower_imgs = DamageTower_imgs[:]
 
     def support(self, towers):
-        pass
+        effected = []
+        for tower in towers:
+            x = tower.x
+            y = tower.y
+
+            distance = math.sqrt((self.x - x)**2 + (self.y - y)**2)
+            if distance <= self.range:
+                effected.append(tower)
+
+        for tower in effected:
+            tower.damage += round(tower.range * self.effect[self.level - 1])
 
         
 
