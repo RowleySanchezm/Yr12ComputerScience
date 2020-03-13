@@ -294,6 +294,7 @@ class PowerfulArcherTower(Tower):
         self.archer_imgs = archer_imgs[:]
         self.archer_count = 0
         self.range = 200
+        self.original_range = self.range
         self.in_range = False
         self.left = True
         self.damage = 1
@@ -379,8 +380,9 @@ for x in range(4,6):
 class RangeTower(Tower):
     def __init__(self, x, y):
         super().__init__(x,y)
-        self.range = 150
-        self.effect = [0.2, 0.4]
+        self.range = 175
+        self.original_range = self.range
+        self.effect = [0.1, 0.2, 0.3]
         self.tower_imgs = RangeTower_imgs[:]
 
     def draw(self, win):
@@ -398,7 +400,7 @@ class RangeTower(Tower):
                 effected.append(tower)
 
         for tower in effected:
-            tower.range += round(tower.range * self.effect[self.level - 1])
+            tower.range = tower.original_range + round(tower.range * self.effect[self.level - 1])
 
 
 DamageTower_imgs = []
@@ -408,8 +410,8 @@ for x in range(7,9):
 class DamageTower(RangeTower):
     def __init__(self, x, y):
         super().__init__(x,y)
-        self.range = 150
-        self.effect = [1, 2]
+        self.range = 175
+        self.effect = [0.5, 1, 2]
         self.tower_imgs = DamageTower_imgs[:]
 
     def support(self, towers):
@@ -423,7 +425,7 @@ class DamageTower(RangeTower):
                 effected.append(tower)
 
         for tower in effected:
-            tower.damage += round(tower.range * self.effect[self.level - 1])
+            tower.damage = tower.original_range + round(tower.range * self.effect[self.level - 1])
 
         
 
