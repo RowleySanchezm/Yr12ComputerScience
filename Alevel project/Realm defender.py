@@ -428,7 +428,7 @@ class DamageTower(RangeTower):
                 effected.append(tower)
 
         for tower in effected:
-            tower.damage = tower.original_damage + round(tower.range * self.effect[self.level - 1])
+            tower.damage = tower.original_damage + round(tower.original_damage * self.effect[self.level - 1])
 
         
 
