@@ -429,7 +429,5 @@ class DamageTower(RangeTower):
 
         
 
-
-
 g = Game()
 g.run()
