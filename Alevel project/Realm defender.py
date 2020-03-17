@@ -299,6 +299,7 @@ class PowerfulArcherTower(Tower):
         self.left = True
         self.damage = 1
         self.frequency = 3
+        self.width = self.height = 90
 
     def draw(self, win):
         super().draw_radius(win)
@@ -317,7 +318,7 @@ class PowerfulArcherTower(Tower):
             add = -25
         else:
             add = -archer.get_width() + 10
-        win.blit(archer, ((self.x + self.width//2 + add), (self.y - archer.get_height() - 25)))
+        win.blit(archer, ((self.x + add), (self.y - archer.get_height() - 25)))
 
     def change_range(self, r):
         self.range = r
@@ -396,7 +397,7 @@ class RangeTower(Tower):
             y = tower.y
 
             distance = math.sqrt((self.x - x)**2 + (self.y - y)**2)
-            if distance <= self.range:
+            if distance <= self.range + tower.width//2:
                 effected.append(tower)
 
         for tower in effected:
@@ -421,7 +422,7 @@ class DamageTower(RangeTower):
             y = tower.y
 
             distance = math.sqrt((self.x - x)**2 + (self.y - y)**2)
-            if distance <= self.range:
+            if distance <= self.range + tower.width//2:
                 effected.append(tower)
 
         for tower in effected:
