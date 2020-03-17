@@ -297,6 +297,7 @@ class PowerfulArcherTower(Tower):
         self.original_range = self.range
         self.in_range = False
         self.left = True
+        self.original_damage = self.damage
         self.damage = 1
         self.frequency = 3
         self.width = self.height = 90
@@ -372,6 +373,7 @@ class QuickArcherTower(PowerfulArcherTower):
         self.left = True
         self.damage = 1
         self.frequency = 6
+        self.original_damage = self.damage
 
 
 RangeTower_imgs = []
@@ -412,7 +414,7 @@ class DamageTower(RangeTower):
     def __init__(self, x, y):
         super().__init__(x,y)
         self.range = 125
-        self.effect = [0.5, 1, 2]
+        self.effect = [0.1, 0.2, 0.3]
         self.tower_imgs = DamageTower_imgs[:]
 
     def support(self, towers):
@@ -426,7 +428,7 @@ class DamageTower(RangeTower):
                 effected.append(tower)
 
         for tower in effected:
-            tower.damage = tower.original_range + round(tower.range * self.effect[self.level - 1])
+            tower.damage = tower.original_damage + round(tower.range * self.effect[self.level - 1])
 
         
 
