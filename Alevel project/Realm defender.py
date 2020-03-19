@@ -23,6 +23,7 @@ class Game:
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.timer = time.time()
         self.font = pygame.font.SysFont("comicsans", 70)
+        self.selected_tower = None
 
     def run(self):
         run = True
@@ -36,6 +37,16 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+
+                pos = pygame.mouse.get_pos()
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for tower in self.towers:
+                        if tower.click(pos[0],pos[1]):
+                            tower.selected = True
+                            self.selected_tower = tower
+                        else:
+                            tower.selected = False
 
             #Deleting enemies off the screen
             to_del = []
@@ -268,10 +279,11 @@ class Tower:
         win.blit(img, (self.x-img.get_width()//2, self.y-img.get_height()//2))
 
     def draw_radius(self, win):
-        #Show range of tower (translucent)
-        surface = pygame.Surface((self.range*4, self.range*4), pygame.SRCALPHA, 32)
-        pygame.draw.circle(surface, (255,135,135, 60), (self.range, self.range), self.range, 0)
-        win.blit(surface, (self.x - self.range, self.y - self.range))
+        if self.selected:
+            #Show range of tower (translucent)
+            surface = pygame.Surface((self.range*4, self.range*4), pygame.SRCALPHA, 32)
+            pygame.draw.circle(surface, (255,135,135, 60), (self.range, self.range), self.range, 0)
+            win.blit(surface, (self.x - self.range, self.y - self.range))
 
     def click(self, X, Y):
         if X <= self.x + self.width and X >= self.x:
