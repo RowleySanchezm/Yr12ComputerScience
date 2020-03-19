@@ -90,6 +90,23 @@ class Game:
     def draw_menu(self):
         pass
 
+
+
+class Menu:
+    def __init__(self,x, y):
+        self.x = x
+        self.y = y
+        self.width = 0
+        self.height = 0
+        self.item_names = []
+        self.imgs = []
+        self.items = 0
+
+    def click(self, x, y):
+        pass
+
+
+
 class Enemy:
     def __init__(self):
         self.width = 64
