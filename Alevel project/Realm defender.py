@@ -286,8 +286,9 @@ class Tower:
             win.blit(surface, (self.x - self.range, self.y - self.range))
 
     def click(self, X, Y):
-        if X <= self.x + self.width and X >= self.x:
-            if Y <= self.y + self.height and Y >= self.y:
+        img = self.tower_imgs[self.level-1]
+        if X - img.get_width()//2 <= self.x + self.width and X >= self.x:
+            if Y - img.get_height()//2 <= self.y + self.height and Y >= self.y:
                 return True
         return False
 
