@@ -48,6 +48,14 @@ class Game:
                         else:
                             tower.selected = False
 
+                    for tower in self.support_towers:
+                        if tower.click(pos[0],pos[1]):
+                            tower.selected = True
+                            self.selected_tower = tower
+                        else:
+                            tower.selected = False
+                    
+
             #Deleting enemies off the screen
             to_del = []
             for enemy in self.enemies:
@@ -417,6 +425,7 @@ class RangeTower(Tower):
         self.original_range = self.range
         self.effect = [0.1, 0.2, 0.3]
         self.tower_imgs = RangeTower_imgs[:]
+        self.width = self.height = 80
 
     def draw(self, win):
         super().draw_radius(win)
