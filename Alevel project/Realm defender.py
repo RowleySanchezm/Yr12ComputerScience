@@ -151,7 +151,7 @@ class Menu:
         self.buttons.append(Button(button_x, button_y, img, name))
 
     def draw(self, win):
-        win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 120))
+        win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
         for item in self.buttons:
             item.draw(win)
     
@@ -305,7 +305,8 @@ class Swordsman(Enemy):
 
 
 
-menu_background = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface", "menu.png")), (120, 50))
+menu_background = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface", "menu.png")), (120, 70))
+upgrade_button = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface", "upgrade.png")), (50, 50))
 
 class Tower:
     def __init__(self, x, y):
@@ -317,9 +318,10 @@ class Tower:
         self.price = [0, 0, 0]
         self.level = 1
         self.selected = False
-        self.menu = Menu(self.x, self.y, menu_background)
         self.tower_imgs = []
         self.damage = 1
+        self.menu = Menu(self.x, self.y, menu_background)
+        self.menu.add_button(upgrade_button, "Upgrade")
 
     def draw(self, win):
         img = self.tower_imgs[self.level-1]
