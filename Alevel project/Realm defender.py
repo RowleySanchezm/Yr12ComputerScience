@@ -151,7 +151,7 @@ class Menu:
         self.buttons.append(Button(button_x, button_y, img, name))
 
     def draw(self, win):
-        win.blit(self.background, ((self.x - self.background.get_width()/2) - 3, self.y))
+        win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 120))
         for item in self.buttons:
             item.draw(win)
     
@@ -496,7 +496,7 @@ class DamageTower(RangeTower):
     def __init__(self, x, y):
         super().__init__(x,y)
         self.range = 125
-        self.effect = [0.1, 0.2, 0.3]
+        self.effect = [0.2, 0.4, 0.5]
         self.tower_imgs = DamageTower_imgs[:]
 
     def support(self, towers):
