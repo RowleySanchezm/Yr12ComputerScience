@@ -146,7 +146,7 @@ class Menu:
     def add_button(self, img, name):
         self.items += 1
         increment_x = self.width/self.items/2
-        button_x = self.items * increment_x - img.get_width()/2
+        button_x = self.x + self.items * increment_x - img.get_width()/2
         button_y = self.y + self.height/2 - img.get_height()/2
         self.buttons.append(Button(button_x, button_y, img, name))
 
