@@ -141,7 +141,7 @@ class Menu:
         self.imgs = []
         self.buttons = []
         self.items = 0
-        self.bg = img
+        self.background = img
 
     def add_button(self, img, name):
         self.items += 1
@@ -151,7 +151,7 @@ class Menu:
         self.buttons.append(Button(button_x, button_y, img, name))
 
     def draw(self, win):
-        win.blit(self.menu_background, (self.x, self.y))
+        win.blit(self.background, (self.x, self.y))
         for item in self.buttons:
             item.draw(win)
     
