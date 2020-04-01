@@ -305,7 +305,7 @@ class Swordsman(Enemy):
 
 
 
-menu_background = pygame.image.load(os.path.join("Game_images/GameInterface", "menu.png"))
+menu_background = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface", "menu.png")), (100, 20))
 
 class Tower:
     def __init__(self, x, y):
