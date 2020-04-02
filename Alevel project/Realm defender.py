@@ -146,8 +146,8 @@ class Menu:
     def add_button(self, img, name):
         self.items += 1
         increment_x = self.width/self.items/2
-        button_x = (self.x - self.background.get_width()/2) - 5
-        button_y = self.y - 140
+        button_x = ((self.x - self.background.get_width()/2) - 5) + 10
+        button_y = (self.y - 140) + 10
         self.buttons.append(Button(button_x, button_y, img, name))
 
     def draw(self, win):
