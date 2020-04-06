@@ -364,7 +364,7 @@ class Tower:
         return self.sell_price[self.level-1]
 
     def upgrade(self):
-        if self.level - 1 < len(self.tower_imgs):
+        if self.level < len(self.tower_imgs):
             self.level += 1
             self.damage += 1
 
