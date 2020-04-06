@@ -6,7 +6,6 @@ import random
 
 pygame.font.init()
 lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
-star_img = pygame.image.load(os.path.join("Game_images/GameInterface","star.png"))
 
 
 class Game:
@@ -119,6 +118,7 @@ class Game:
         pass
 
 
+star_img = pygame.image.load(os.path.join("Game_images/GameInterface","star.png"))
 
 class Button:
     def __init__(self, x, y, img, name):
@@ -141,20 +141,19 @@ class Button:
 
     
 class Menu:
-    def __init__(self,x, y, img):
+    def __init__(self,x, y, img, item_cost):
         self.x = x
         self.y = y
         self.width = img.get_width()
         self.height = img.get_height()
-        self.item_names = []
-        self.imgs = []
+        self.item_cost = item_cost
         self.buttons = []
         self.items = 0
         self.background = img
+        self.font = pygame.font.SysFont("comicsans", 30)
 
     def add_button(self, img, name):
         self.items += 1
-        increment_x = self.width/self.items/2
         button_x = ((self.x - self.background.get_width()/2) - 5) + 10
         button_y = (self.y - 140) + 10
         self.buttons.append(Button(button_x, button_y, img, name))
@@ -163,6 +162,7 @@ class Menu:
         win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
         for item in self.buttons:
             item.draw(win)
+            win.blit(star_img, (item.x + item.width + 10, item.y))
     
     def get_clicked(self, X, Y):
         for button in self.buttons:
@@ -331,7 +331,7 @@ class Tower:
         self.selected = False
         self.tower_imgs = []
         self.damage = 1
-        self.menu = Menu(self.x, self.y, menu_background)
+        self.menu = Menu(self.x, self.y, menu_background, [2000, 5000, 12000])
         self.menu.add_button(upgrade_button, "Upgrade")
 
     def draw(self, win):
