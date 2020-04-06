@@ -164,7 +164,7 @@ class Menu:
         for item in self.buttons:
             item.draw(win)
             win.blit(star_img, (item.x + item.width + 4, item.y - 8))
-            text = self.font.render(self.item_cost[self.tower.level - 1])
+            text = self.font.render(self.item_cost[self.tower.level - 1], 1, (255,255,255))
             win.blit(text, item.x + item.width + 1, item.y + star_img.get_height()) 
     
     def get_clicked(self, X, Y):
