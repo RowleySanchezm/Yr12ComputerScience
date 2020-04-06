@@ -42,9 +42,13 @@ class Game:
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     #Check to see if a tower is selected
-                    if self.selected_tower and self.selected_tower.menu.get_clicked(pos[0], pos[1]):
-                        pass
-                    else:
+                    button_clicked = None
+                    if self.selected_tower:
+                        button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
+                        if button_clicked:
+                            print(button_clicked)
+
+                    if not(button_clicked):
                         for tower in self.towers:
                             if tower.click(pos[0],pos[1]):
                                 tower.selected = True
@@ -58,6 +62,7 @@ class Game:
                                 self.selected_tower = tower
                             else:
                                 tower.selected = False
+                            
                     
 
             #Deleting enemies off the screen
