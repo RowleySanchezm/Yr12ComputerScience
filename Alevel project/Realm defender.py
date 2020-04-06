@@ -21,7 +21,7 @@ class Game:
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.timer = time.time()
-        self.font = pygame.font.SysFont("comicsans", 70)
+        self.font = pygame.font.SysFont("comicsans", 50)
         self.selected_tower = None
 
     def run(self):
@@ -114,11 +114,10 @@ class Game:
             self.win.blit(life, (10 + life.get_width()*x, 10))
 
         currency_text = self.font.render(str(self.money), 1, (0, 0, 0))
-        money = pygame.transform.scale(star_img, (50, 50))
-        start_x = self.width - money.get_width() - 10
+        money = pygame.transform.scale(star_img, (40, 40))
 
-        self.win.blit(currency_text, (start_x - currency_text.get_width() - 10, 65))
-        self.win.blit(money, (start_x, 10))
+        self.win.blit(currency_text, (12 + money.get_width(), 55))
+        self.win.blit(money, (10, 50))
         
         pygame.display.update()
 
