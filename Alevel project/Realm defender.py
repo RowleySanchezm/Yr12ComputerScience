@@ -118,7 +118,7 @@ class Game:
         pass
 
 
-star_img = pygame.image.load(os.path.join("Game_images/GameInterface","star.png"))
+star_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","star.png")), (55, 55))
 
 class Button:
     def __init__(self, x, y, img, name):
@@ -162,7 +162,7 @@ class Menu:
         win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
         for item in self.buttons:
             item.draw(win)
-            win.blit(star_img, (item.x + item.width + 10, item.y))
+            win.blit(star_img, (item.x + item.width, item.y - 5))
     
     def get_clicked(self, X, Y):
         for button in self.buttons:
