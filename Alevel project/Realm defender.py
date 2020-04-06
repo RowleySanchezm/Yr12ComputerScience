@@ -335,7 +335,7 @@ class Tower:
         self.selected = False
         self.tower_imgs = []
         self.damage = 1
-        self.menu = Menu(self, self.x, self.y, menu_background, [2000, 5000, "Max lv"])
+        self.menu = Menu(self, self.x, self.y, menu_background, [2000, "Max lv"])
         self.menu.add_button(upgrade_button, "Upgrade")
 
     def draw(self, win):
@@ -400,6 +400,8 @@ class PowerfulArcherTower(Tower):
         self.damage = 1
         self.frequency = 3
         self.width = self.height = 90
+        self.menu = Menu(self, self.x, self.y, menu_background, [2000, 5000, "Max lv"])
+        self.menu.add_button(upgrade_button, "Upgrade")
 
     def draw(self, win):
         super().draw_radius(win)
@@ -473,6 +475,8 @@ class QuickArcherTower(PowerfulArcherTower):
         self.damage = 1
         self.frequency = 6
         self.original_damage = self.damage
+        self.menu = Menu(self, self.x, self.y, menu_background, [2500, 6000, "Max lv"])
+        self.menu.add_button(upgrade_button, "Upgrade")
 
 
 RangeTower_imgs = []
