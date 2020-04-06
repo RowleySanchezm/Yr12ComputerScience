@@ -17,7 +17,7 @@ class Game:
         self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490)]
         self.support_towers = [DamageTower(560,300)]
         self.lives = 10
-        self.money = 100
+        self.money = 1000
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.timer = time.time()
@@ -112,6 +112,13 @@ class Game:
         life = pygame.transform.scale(lives_img,(28,28))
         for x in range(self.lives):
             self.win.blit(life, (10 + life.get_width()*x, 10))
+
+        currency_text = self.font.render(str(self.money), 1, (0, 0, 0))
+        money = pygame.transform.scale(star_img, (50, 50))
+        start_x = self.width - money.get_width() - 10
+
+        self.win.blit(currency_text, (start_x - currency_text.get_width() - 10, 65))
+        self.win.blit(money, (start_x, 10))
         
         pygame.display.update()
 
