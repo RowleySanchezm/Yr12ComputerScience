@@ -335,7 +335,7 @@ class Tower:
         self.selected = False
         self.tower_imgs = []
         self.damage = 1
-        self.menu = Menu(self, self.x, self.y, menu_background, [2000, 5000, 12000])
+        self.menu = Menu(self, self.x, self.y, menu_background, [2000, 5000, "Max lv"])
         self.menu.add_button(upgrade_button, "Upgrade")
 
     def draw(self, win):
@@ -364,8 +364,9 @@ class Tower:
         return self.sell_price[self.level-1]
 
     def upgrade(self):
-        self.level += 1
-        self.damage += 1
+        if self.level - 1 < len(self.tower_imgs):
+            self.level += 1
+            self.damage += 1
 
     def upgrade_cost(self):
         return self.price[self.level-1]
