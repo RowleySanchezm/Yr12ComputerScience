@@ -150,7 +150,7 @@ class Menu:
         self.buttons = []
         self.items = 0
         self.background = img
-        self.font = pygame.font.SysFont("comicsans", 30)
+        self.font = pygame.font.SysFont("comicsans", 25)
         self.tower = tower
 
     def add_button(self, img, name):
@@ -163,9 +163,9 @@ class Menu:
         win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
         for item in self.buttons:
             item.draw(win)
-            win.blit(star_img, (item.x + item.width + 4, item.y - 8))
+            win.blit(star_img, (item.x + item.width + 5, item.y - 9))
             text = self.font.render(str(self.item_cost[self.tower.level - 1]), 1, (255,255,255))
-            win.blit(text, (item.x + item.width + 1, item.y + star_img.get_height()))
+            win.blit(text, (item.x + item.width + 30 - text.get_width()/2, item.y + star_img.get_height() - 8))
     
     def get_clicked(self, X, Y):
         for button in self.buttons:
