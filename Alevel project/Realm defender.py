@@ -46,7 +46,7 @@ class Game:
                         button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
                         if button_clicked:
                             if button_clicked == "Upgrade":
-                                cost = self.selected_tower.menu.get_upgrade_cost
+                                cost = self.selected_tower.menu.get_item_cost()
                                 if self.money >= cost:
                                     self.money -= cost
                                     self.selected_tower.upgrade()
