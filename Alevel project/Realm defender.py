@@ -14,7 +14,7 @@ class Game:
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
-        self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490)]
+        self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490), PowerfulArcherTower(850,250)]
         self.support_towers = [DamageTower(560,300)]
         self.lives = 10
         self.money = 1000
@@ -77,7 +77,7 @@ class Game:
 
             #Loop through towers
             for tower in self.towers:
-                tower.attack(self.enemies)
+                self.money += tower.attack(self.enemies)
 
             #Loop through support towers
             for tower in self.support_towers:
