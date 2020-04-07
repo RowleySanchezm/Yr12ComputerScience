@@ -289,6 +289,8 @@ class Knight(Enemy):
         self.max_health = 1
         self.health = self.max_health
         self.imgs = Knight_imgs[:]
+        self.name = "knight"
+        self.reward = 5
         
 
 
@@ -306,6 +308,8 @@ class Battleaxe(Enemy):
         self.max_health = 5
         self.health = self.max_health
         self.imgs = Battleaxe_imgs[:]
+        self.name = "battleaxe"
+        self.reward = 15
         
 
 
@@ -323,6 +327,8 @@ class Swordsman(Enemy):
         self.max_health = 3
         self.health = self.max_health
         self.imgs = Swordsman_imgs[:]
+        self.name = "swordsman"
+        self.reward = 10
 
 
 
@@ -432,6 +438,7 @@ class PowerfulArcherTower(Tower):
         self.range = r
 
     def attack(self, enemies):
+        money = 0
         self.in_range = False
         enemy_closest = []
         for enemy in enemies:
@@ -449,7 +456,7 @@ class PowerfulArcherTower(Tower):
             if self.archer_count == 5:
                 if first_enemy.hit(self.damage) == True:
                     enemies.remove(first_enemy)
-
+                    money = first_enemy.reward
             if first_enemy.x > self.x and not(self.left):
                 self.left = True
                 for x, img in enumerate(self.archer_imgs):
@@ -458,6 +465,8 @@ class PowerfulArcherTower(Tower):
                 self.left = False
                 for x, img in enumerate(self.archer_imgs):
                     self.archer_imgs[x] = pygame.transform.flip(img, True, False)
+
+        return money
 
 tower2_imgs = []
 archer2_imgs = []
