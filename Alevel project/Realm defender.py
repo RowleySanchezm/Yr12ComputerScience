@@ -17,7 +17,7 @@ class Game:
         self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490), PowerfulArcherTower(850,250)]
         self.support_towers = [DamageTower(560,300)]
         self.lives = 10
-        self.money = 1000
+        self.money = 4000
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.timer = time.time()
@@ -46,7 +46,10 @@ class Game:
                         button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
                         if button_clicked:
                             if button_clicked == "Upgrade":
-                                self.selected_tower.upgrade()
+                                cost = self.selected_tower.menu.get_upgrade_cost
+                                if self.money >= cost:
+                                    self.money -= cost
+                                    self.selected_tower.upgrade()
 
                     if not(button_clicked):
                         for tower in self.towers:
@@ -165,6 +168,9 @@ class Menu:
         button_x = ((self.x - self.background.get_width()/2) - 5) + 10
         button_y = (self.y - 140) + 10
         self.buttons.append(Button(button_x, button_y, img, name))
+
+    def get_item_cost(self):
+        return self.item_cost[self.tower.level - 1]
 
     def draw(self, win):
         win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
@@ -414,6 +420,9 @@ class PowerfulArcherTower(Tower):
         self.width = self.height = 90
         self.menu = Menu(self, self.x, self.y, menu_background, [2000, 5000, "Max lv"])
         self.menu.add_button(upgrade_button, "Upgrade")
+
+    def get_upgrade_cost(self):
+        return self.menu.get_item_cost()
 
     def draw(self, win):
         super().draw_radius(win)
