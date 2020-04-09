@@ -24,7 +24,7 @@ class Game:
         self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490), PowerfulArcherTower(850,250)]
         self.support_towers = [DamageTower(560,300)]
         self.lives = 10
-        self.money = 4000
+        self.money = 20000
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.timer = time.time()
@@ -52,6 +52,12 @@ class Game:
                 pos = pygame.mouse.get_pos()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    #Check to see if tower menu icons have been clicked on
+                    tower_menu_button = self.menu.get_clicked(pos[0], pos[1])
+                    if tower_menu_button:
+                        print(tower_menu_button)
+                    
+                       
                     #Check to see if a tower is selected
                     button_clicked = None
                     if self.selected_tower:
