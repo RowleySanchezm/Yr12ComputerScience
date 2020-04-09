@@ -6,7 +6,7 @@ import random
 
 pygame.font.init()
 lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
-tower_menu_img = pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png"))
+tower_menu_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png")), (150, 590))
 
 
 
@@ -25,7 +25,7 @@ class Game:
         self.timer = time.time()
         self.font = pygame.font.SysFont("comicsans", 50)
         self.selected_tower = None
-        self.menu = Tower_menu(95, 240, tower_menu_img)
+        self.menu = Tower_menu(85, 240, tower_menu_img)
 
     def run(self):
         run = True
