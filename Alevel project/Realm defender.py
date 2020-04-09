@@ -25,7 +25,7 @@ class Game:
         self.timer = time.time()
         self.font = pygame.font.SysFont("comicsans", 50)
         self.selected_tower = None
-        self.menu = Tower_menu(self.width - tower_menu_img.get_width() - 5, 200, tower_menu_img)
+        self.menu = Tower_menu(95, 240, tower_menu_img)
 
     def run(self):
         run = True
