@@ -228,6 +228,15 @@ class Tower_menu(Menu):
         button_y = self.y + 10 + (self.items - 1)*60
         self.buttons.append(Tower_menu_button(button_x, button_y, img, name, cost))
 
+    def draw(self, win):
+        win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
+        for item in self.buttons:
+            item.draw(win)
+            win.blit(star_img, (item.x + item.width + 5, item.y - 9))
+            text = self.font.render(str(item.cost), 1, (255,255,255))
+            win.blit(text, (item.x + item.width + 30 - text.get_width()/2, item.y + star_img.get_height() - 8))
+    
+
 
 
 class Enemy:
