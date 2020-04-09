@@ -6,6 +6,8 @@ import random
 
 pygame.font.init()
 lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
+tower_menu_img = pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png"))
+
 
 
 class Game:
@@ -23,6 +25,7 @@ class Game:
         self.timer = time.time()
         self.font = pygame.font.SysFont("comicsans", 50)
         self.selected_tower = None
+        self.menu = Tower_menu(self.width - tower_menu_img.get_width() - 5, 200, tower_menu_img)
 
     def run(self):
         run = True
@@ -111,6 +114,9 @@ class Game:
         for enemy in self.enemies:
             enemy.draw(self.win)
 
+        #Draw menu
+        self.menu.draw(self.win)
+
         #Draw game stats
         life = pygame.transform.scale(lives_img,(28,28))
         for x in range(self.lives):
@@ -149,7 +155,14 @@ class Button:
         win.blit(self.img, (self.x, self.y))
 
 
-    
+
+class Tower_menu_button(Button):
+    def __init__(self, x, y, img, name, cost):
+        super().__init__(x, y, img, name)
+        self.cost = cost
+
+
+
 class Menu:
     def __init__(self,tower, x, y, img, item_cost):
         self.x = x
@@ -186,6 +199,25 @@ class Menu:
                 return button.name
 
         return None
+
+
+
+class Tower_menu(Menu):
+    def __init__(self, x, y, img):
+        self.x = x
+        self.y = y
+        self.width = img.get_width()
+        self.height = img.get_height()
+        self.buttons = []
+        self.items = 0
+        self.background = img
+        self.font = pygame.font.SysFont("comicsans", 25)
+
+    def add_button(self, img, name, cost):
+        self.items += 1
+        button_x = self.x + 10
+        button_y = self.y + 10 + (self.items - 1)*60
+        self.buttons.append(Tower_menu_button(button_x, button_y, img, name, cost))
 
 
 
