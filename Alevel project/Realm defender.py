@@ -7,11 +7,11 @@ import random
 pygame.font.init()
 lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
 #Tower menu images
-tower_menu_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png")), (150, 590))
-range_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","range_support.png")), (50, 50))
-attack_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","attack_support.png")), (50, 50))
-powerful_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","powerful_archer.png")), (50, 50))
-quick_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","quick_archer.png")), (50, 50))
+tower_menu_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png")), (150, 500))
+range_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","range_support.png")), (75, 75))
+attack_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","attack_support.png")), (75, 75))
+powerful_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","powerful_archer.png")), (75, 75))
+quick_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","quick_archer.png")), (75, 75))
 
 
 
@@ -31,8 +31,8 @@ class Game:
         self.font = pygame.font.SysFont("comicsans", 50)
         self.selected_tower = None
         self.menu = Tower_menu(85, 240, tower_menu_img)
-        self.menu.add_button(powerful_archer_img, "powerful_archer", 600)
         self.menu.add_button(quick_archer_img, "quick_archer", 500)
+        self.menu.add_button(powerful_archer_img, "powerful_archer", 600)
         self.menu.add_button(range_support_img, "range_support", 1000)
         self.menu.add_button(attack_support_img, "attack_support", 1000)
 
@@ -224,17 +224,17 @@ class Tower_menu(Menu):
 
     def add_button(self, img, name, cost):
         self.items += 1
-        button_x = self.x + 10
-        button_y = self.y + 10 + (self.items - 1)*60
+        button_x = self.x - 70
+        button_y = self.y - 95 + (self.items - 1)*110
         self.buttons.append(Tower_menu_button(button_x, button_y, img, name, cost))
 
     def draw(self, win):
         win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
         for item in self.buttons:
             item.draw(win)
-            win.blit(star_img, (item.x + item.width + 5, item.y - 9))
+            win.blit(star_img, (item.x + item.width + 5, item.y + 5))
             text = self.font.render(str(item.cost), 1, (255,255,255))
-            win.blit(text, (item.x + item.width + 30 - text.get_width()/2, item.y + star_img.get_height() - 8))
+            win.blit(text, (item.x + item.width + 30 - text.get_width()/2, item.y + star_img.get_height() + 5))
     
 
 
