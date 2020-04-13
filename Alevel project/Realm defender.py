@@ -13,7 +13,7 @@ attack_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game
 powerful_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","powerful_archer.png")), (75, 75))
 quick_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","quick_archer.png")), (75, 75))
 
-support_tower_names = ["damage_object", "range_object"]
+support_tower_names = ["range", "damage"]
 attack_tower_names = ["powerful_archer", "quick_archer"]
 
 class Game:
@@ -169,7 +169,7 @@ class Game:
     def add_tower(self, name):
         x, y = pygame.mouse.get_pos()
         name_list = ["quick_archer", "powerful_archer", "range_support", "attack_support"]
-        object_list = [QuickArcherTower(x,y), PowerfulArcherTower(x,y), DamageTower(x,y), RangeTower(x,y)]
+        object_list = [QuickArcherTower(x,y), PowerfulArcherTower(x,y), RangeTower(x,y), DamageTower(x,y)]
         try:
             obj = object_list[name_list.index(name)]
             self.moving_object = obj
@@ -604,7 +604,7 @@ class RangeTower(Tower):
         self.effect = [0.1, 0.2, 0.3]
         self.tower_imgs = RangeTower_imgs[:]
         self.width = self.height = 80
-        self.name = "range_object"
+        self.name = "range"
 
     def draw(self, win):
         super().draw_radius(win)
@@ -634,7 +634,7 @@ class DamageTower(RangeTower):
         self.range = 125
         self.effect = [0.2, 0.4, 0.5]
         self.tower_imgs = DamageTower_imgs[:]
-        self.name = "damage_object"
+        self.name = "damage"
 
     def support(self, towers):
         effected = []
