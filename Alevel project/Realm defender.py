@@ -177,7 +177,6 @@ class Game:
         except Exception as e:
             print(str(e) + "Not valid name")
 
-        #
 
 star_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","star.png")), (50, 50))
 
@@ -478,6 +477,8 @@ class Tower:
     def move(self, x, y):
         self.x = x
         self.y = y
+        self.menu.x = x
+        self.menu.y = y
 
         
 tower_imgs = []
