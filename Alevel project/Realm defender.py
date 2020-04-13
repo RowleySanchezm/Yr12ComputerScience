@@ -13,7 +13,8 @@ attack_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game
 powerful_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","powerful_archer.png")), (75, 75))
 quick_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","quick_archer.png")), (75, 75))
 
-
+support_tower_names = ["damage_object", "range_object"]
+attack_tower_names = ["powerful_archer", "quick_archer"]
 
 class Game:
     def __init__(self):
@@ -35,54 +36,71 @@ class Game:
         self.menu.add_button(powerful_archer_img, "powerful_archer", 600)
         self.menu.add_button(range_support_img, "range_support", 1000)
         self.menu.add_button(attack_support_img, "attack_support", 1000)
+        self.moving_object = None
 
     def run(self):
         run = True
         clock = pygame.time.Clock()
         while run:
+            clock.tick(200)
+            #Generates enemies
             if time.time() - self.timer >= 6:
                 self.timer = time.time()
                 self.enemies.append(random.choice([Knight(), Swordsman(), Battleaxe()]))
-                
-            clock.tick(200)
+
+            pos = pygame.mouse.get_pos()
+            
+            #See if object is being moved
+            if self.moving_object:
+                self.moving_object.move(pos[0], pos[1])
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
 
-                pos = pygame.mouse.get_pos()
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    #Check to see if tower menu icons have been clicked on
-                    tower_menu_button = self.menu.get_clicked(pos[0], pos[1])
-                    if tower_menu_button:
-                        print(tower_menu_button)
-                    
-                       
-                    #Check to see if a tower is selected
-                    button_clicked = None
-                    if self.selected_tower:
-                        button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
-                        if button_clicked:
-                            if button_clicked == "Upgrade":
-                                cost = self.selected_tower.menu.get_item_cost()
-                                if self.money >= cost:
-                                    self.money -= cost
-                                    self.selected_tower.upgrade()
+                    #Check for moving object plus mouse down
+                    if self.moving_object:
 
-                    if not(button_clicked):
-                        for tower in self.towers:
-                            if tower.click(pos[0],pos[1]):
-                                tower.selected = True
-                                self.selected_tower = tower
-                            else:
-                                tower.selected = False
+                        if self.moving_object.name in attack_tower_names:
+                            self.attack_towers.append(self.moving_objects)
+                        elif self.moving_object.name in support_tower_names:
+                            self.support_towers.append(self.moving_objects)
 
-                        for tower in self.support_towers:
-                            if tower.click(pos[0],pos[1]):
-                                tower.selected = True
-                                self.selected_tower = tower
-                            else:
-                                tower.selected = False
+                        self.moving_object.moving = False
+                        self.moving_object = None
+                        
+                    else:
+                        #Check to see if tower menu icons have been clicked on
+                        tower_menu_button = self.menu.get_clicked(pos[0], pos[1])
+                        if tower_menu_button:
+                            print(tower_menu_button)
+                        
+                        #Check to see if a tower is selected
+                        button_clicked = None
+                        if self.selected_tower:
+                            button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
+                            if button_clicked:
+                                if button_clicked == "Upgrade":
+                                    cost = self.selected_tower.menu.get_item_cost()
+                                    if self.money >= cost:
+                                        self.money -= cost
+                                        self.selected_tower.upgrade()
+
+                        if not(button_clicked):
+                            for tower in self.towers:
+                                if tower.click(pos[0],pos[1]):
+                                    tower.selected = True
+                                    self.selected_tower = tower
+                                else:
+                                    tower.selected = False
+
+                            for tower in self.support_towers:
+                                if tower.click(pos[0],pos[1]):
+                                    tower.selected = True
+                                    self.selected_tower = tower
+                                else:
+                                    tower.selected = False
                             
                     
 
@@ -110,29 +128,32 @@ class Game:
 
 
             self.draw()
-            
 
         pygame.quit()
 
     def draw(self):
         self.win.blit(self.background, (0,0))
 
-        #Draw Towers
+        #Towers
         for towers in self.towers:
             towers.draw(self.win)
 
-        #Draw support Towers
+        #Support towers
         for towers in self.support_towers:
             towers.draw(self.win)
 
-        #Draw enemies
+        #Enemies
         for enemy in self.enemies:
             enemy.draw(self.win)
 
-        #Draw menu
+        #Objects being purchased
+        if self.moving_object:
+            self.moving_object.draw(self.win)
+
+        #Menu
         self.menu.draw(self.win)
 
-        #Draw game stats
+        #Game stats
         life = pygame.transform.scale(lives_img,(28,28))
         for x in range(self.lives):
             self.win.blit(life, (10 + life.get_width()*x, 10))
@@ -145,9 +166,17 @@ class Game:
         
         pygame.display.update()
 
-    def draw_menu(self):
-        pass
+    def add_tower(self, name):
+        name_list = ["quick_archer", "powerful_archer", "range_support", "attack_support"]
+        object_list = [QuickArcherTower(), PowerfulArcherTower(), DamageTower(), RangeTower()]
+        try:
+            obj = object_list[name_list.index(name)]
+            self.moving_object = obj
+            obj.moving = True
+        except Exception as e:
+            print(str(e) + "Not valid name")
 
+        
 
 star_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","star.png")), (50, 50))
 
@@ -476,6 +505,8 @@ class PowerfulArcherTower(Tower):
         self.width = self.height = 90
         self.menu = Menu(self, self.x, self.y, menu_background, [2000, 5000, "Max lv"])
         self.menu.add_button(upgrade_button, "Upgrade")
+        self.moving = False
+        self.name = "powerful_archer"
 
     def get_upgrade_cost(self):
         return self.menu.get_item_cost()
@@ -484,7 +515,7 @@ class PowerfulArcherTower(Tower):
         super().draw_radius(win)
         super().draw(win)
 
-        if self.in_range == True:
+        if self.in_range and not self.moving:
             self.archer_count += 1
             if self.archer_count >= len(self.archer_imgs)*3:
                 self.archer_count = 0
@@ -557,6 +588,7 @@ class QuickArcherTower(PowerfulArcherTower):
         self.original_damage = self.damage
         self.menu = Menu(self, self.x, self.y, menu_background, [2500, 6000, "Max lv"])
         self.menu.add_button(upgrade_button, "Upgrade")
+        self.name = "quick_archer"
 
 
 RangeTower_imgs = []
@@ -571,6 +603,7 @@ class RangeTower(Tower):
         self.effect = [0.1, 0.2, 0.3]
         self.tower_imgs = RangeTower_imgs[:]
         self.width = self.height = 80
+        self.name = "range_object"
 
     def draw(self, win):
         super().draw_radius(win)
@@ -600,6 +633,7 @@ class DamageTower(RangeTower):
         self.range = 125
         self.effect = [0.2, 0.4, 0.5]
         self.tower_imgs = DamageTower_imgs[:]
+        self.name = "damage_object"
 
     def support(self, towers):
         effected = []
