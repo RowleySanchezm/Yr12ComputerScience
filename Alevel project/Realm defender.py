@@ -181,11 +181,12 @@ class Game:
 star_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","star.png")), (50, 50))
 
 class Button:
-    def __init__(self, x, y, img, name):
+    def __init__(self, menu, img, name):
         self.name = name
         self.img = img
-        self.x = x
-        self.y = y
+        self.x = menu.x
+        self.y = menu.y
+        self.menu = menu
         self.width = self.img.get_width()
         self.height = self.img.get_height()
 
@@ -198,6 +199,10 @@ class Button:
     def draw(self, win):
         win.blit(self.img, (self.x, self.y))
 
+    def update(self):
+        self.x = self.menu.x
+        self.y = self.menu.y
+        
 
 
 class Tower_menu_button(Button):
@@ -244,6 +249,10 @@ class Menu:
 
         return None
 
+    def update(self):
+        for button in self.buttons:
+            button.update()
+
 
 
 class Tower_menu(Menu):
@@ -261,7 +270,7 @@ class Tower_menu(Menu):
         self.items += 1
         button_x = self.x - 70
         button_y = self.y - 95 + (self.items - 1)*110
-        self.buttons.append(Tower_menu_button(button_x, button_y, img, name, cost))
+        self.buttons.append(Tower_menu_button(self, img, name, cost))
 
     def draw(self, win):
         win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
@@ -479,6 +488,7 @@ class Tower:
         self.y = y
         self.menu.x = x
         self.menu.y = y
+        self.menu.update()
 
         
 tower_imgs = []
