@@ -63,9 +63,9 @@ class Game:
                     if self.moving_object:
 
                         if self.moving_object.name in attack_tower_names:
-                            self.attack_towers.append(self.moving_objects)
+                            self.towers.append(self.moving_object)
                         elif self.moving_object.name in support_tower_names:
-                            self.support_towers.append(self.moving_objects)
+                            self.support_towers.append(self.moving_object)
 
                         self.moving_object.moving = False
                         self.moving_object = None
