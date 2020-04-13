@@ -74,7 +74,7 @@ class Game:
                         #Check to see if tower menu icons have been clicked on
                         tower_menu_button = self.menu.get_clicked(pos[0], pos[1])
                         if tower_menu_button:
-                            print(tower_menu_button)
+                            self.add_tower(tower_menu_button)
                         
                         #Check to see if a tower is selected
                         button_clicked = None
