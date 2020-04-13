@@ -167,8 +167,9 @@ class Game:
         pygame.display.update()
 
     def add_tower(self, name):
+        x, y = pygame.mouse.get_pos()
         name_list = ["quick_archer", "powerful_archer", "range_support", "attack_support"]
-        object_list = [QuickArcherTower(), PowerfulArcherTower(), DamageTower(), RangeTower()]
+        object_list = [QuickArcherTower(x,y), PowerfulArcherTower(x,y), DamageTower(x,y), RangeTower(x,y)]
         try:
             obj = object_list[name_list.index(name)]
             self.moving_object = obj
