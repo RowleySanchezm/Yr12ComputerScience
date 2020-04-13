@@ -184,8 +184,8 @@ class Button:
     def __init__(self, menu, img, name):
         self.name = name
         self.img = img
-        self.x = menu.x
-        self.y = menu.y
+        self.x = menu.x - 55
+        self.y = menu.y - 130
         self.menu = menu
         self.width = self.img.get_width()
         self.height = self.img.get_height()
@@ -200,14 +200,19 @@ class Button:
         win.blit(self.img, (self.x, self.y))
 
     def update(self):
-        self.x = self.menu.x
-        self.y = self.menu.y
+        self.x = self.menu.x - 55
+        self.y = self.menu.y - 130
         
 
 
 class Tower_menu_button(Button):
     def __init__(self, x, y, img, name, cost):
-        super().__init__(x, y, img, name)
+        self.name = name
+        self.img = img
+        self.x = x
+        self.y = y
+        self.width = self.img.get_width()
+        self.height = self.img.get_height()
         self.cost = cost
 
 
@@ -227,9 +232,7 @@ class Menu:
 
     def add_button(self, img, name):
         self.items += 1
-        button_x = ((self.x - self.background.get_width()/2) - 5) + 10
-        button_y = (self.y - 140) + 10
-        self.buttons.append(Button(button_x, button_y, img, name))
+        self.buttons.append(Button(self, img, name))
 
     def get_item_cost(self):
         return self.item_cost[self.tower.level - 1]
@@ -270,7 +273,7 @@ class Tower_menu(Menu):
         self.items += 1
         button_x = self.x - 70
         button_y = self.y - 95 + (self.items - 1)*110
-        self.buttons.append(Tower_menu_button(self, img, name, cost))
+        self.buttons.append(Tower_menu_button(button_x, button_y, img, name, cost))
 
     def draw(self, win):
         win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
