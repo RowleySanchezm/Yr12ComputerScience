@@ -177,7 +177,7 @@ class Game:
         except Exception as e:
             print(str(e) + "Not valid name")
 
-        
+        #
 
 star_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","star.png")), (50, 50))
 
