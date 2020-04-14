@@ -46,7 +46,7 @@ class Game:
             #Generates enemies
             if time.time() - self.timer >= 6:
                 self.timer = time.time()
-                self.enemies.append(random.choice([Knight(), Swordsman(), Battleaxe()]))
+                self.enemies.append(random.choice([Axeman()]))
 
             pos = pygame.mouse.get_pos()
             
@@ -402,7 +402,25 @@ class Knight(Enemy):
         self.imgs = Knight_imgs[:]
         self.name = "knight"
         self.reward = 5
+
         
+
+Swordsman_imgs = []
+
+for x in range(20):
+    add_str = str(x)
+    if x < 10:
+        add_str = "0" + add_str
+    Swordsman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    
+class Swordsman(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.max_health = 3
+        self.health = self.max_health
+        self.imgs = Swordsman_imgs[:]
+        self.name = "swordsman"
+        self.reward = 10
 
 
 Battleaxe_imgs = []
@@ -421,25 +439,24 @@ class Battleaxe(Enemy):
         self.imgs = Battleaxe_imgs[:]
         self.name = "battleaxe"
         self.reward = 15
+
+
         
+Axeman_imgs = []
 
-
-Swordsman_imgs = []
-
-for x in range(20):
+for x in range(10):
     add_str = str(x)
     if x < 10:
         add_str = "0" + add_str
-    Swordsman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
-    
-class Swordsman(Enemy):
+    Axeman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy1", "2_enemies_1_RUN_0" + add_str + ".png")), (64, 64)))
+
+class Axeman(Enemy):
     def __init__(self):
         super().__init__()
-        self.max_health = 3
-        self.health = self.max_health
-        self.imgs = Swordsman_imgs[:]
-        self.name = "swordsman"
-        self.reward = 10
+        self.max_health = 10
+        self.imgs = Axeman_imgs[:]
+        self.name = "axeman"
+        self.reward = 30
 
 
 
