@@ -46,7 +46,7 @@ class Game:
             #Generates enemies
             if time.time() - self.timer >= 6:
                 self.timer = time.time()
-                self.enemies.append(random.choice([Axeman()]))
+                self.enemies.append(random.choice([Knight(), Clubman(), Swordsman(), Battleaxe(), Axeman()]))
 
             pos = pygame.mouse.get_pos()
             
@@ -392,7 +392,7 @@ for x in range(20):
     add_str = str(x)
     if x < 10:
         add_str = "0" + add_str
-    Knight_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    Knight_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy4", "4_enemies_1_run_0" + add_str + ".png")), (50, 50)))
             
 class Knight(Enemy):
     def __init__(self):
@@ -405,13 +405,32 @@ class Knight(Enemy):
 
         
 
+Clubman_imgs = []
+
+for x in range(20):
+    add_str = str(x)
+    if x < 10:
+        add_str = "0" + add_str
+    Clubman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy2", "3_enemies_1_run_0" + add_str + ".png")), (55, 55)))
+    
+class Clubman(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.max_health = 2
+        self.health = self.max_health
+        self.imgs = Clubman_imgs[:]
+        self.name = "clubman"
+        self.reward = 10
+
+
+
 Swordsman_imgs = []
 
 for x in range(20):
     add_str = str(x)
     if x < 10:
         add_str = "0" + add_str
-    Swordsman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    Swordsman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy10", "10_enemies_1_run_0" + add_str + ".png")), (60, 60)))
     
 class Swordsman(Enemy):
     def __init__(self):
@@ -420,16 +439,17 @@ class Swordsman(Enemy):
         self.health = self.max_health
         self.imgs = Swordsman_imgs[:]
         self.name = "swordsman"
-        self.reward = 10
+        self.reward = 15
 
 
+        
 Battleaxe_imgs = []
 
 for x in range(20):
     add_str = str(x)
     if x < 10:
         add_str = "0" + add_str
-    Battleaxe_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (64, 64)))
+    Battleaxe_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy7", "7_enemies_1_run_0" + add_str + ".png")), (65, 65)))
     
 class Battleaxe(Enemy):
     def __init__(self):
@@ -438,7 +458,7 @@ class Battleaxe(Enemy):
         self.health = self.max_health
         self.imgs = Battleaxe_imgs[:]
         self.name = "battleaxe"
-        self.reward = 15
+        self.reward = 25
 
 
         
@@ -448,7 +468,7 @@ for x in range(10):
     add_str = str(x)
     if x < 10:
         add_str = "0" + add_str
-    Axeman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy1", "2_enemies_1_RUN_0" + add_str + ".png")), (64, 64)))
+    Axeman_imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("Game_images/Enemy1", "2_enemies_1_RUN_0" + add_str + ".png")), (70, 70)))
 
 class Axeman(Enemy):
     def __init__(self):
@@ -457,7 +477,7 @@ class Axeman(Enemy):
         self.health = self.max_health
         self.imgs = Axeman_imgs[:]
         self.name = "axeman"
-        self.reward = 30
+        self.reward = 50
 
 
 
