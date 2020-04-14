@@ -322,7 +322,7 @@ class Enemy:
 
     def draw_health_bar(self, win):
         length = 25
-        move_by = length // self.max_health
+        move_by = length / self.max_health
         health_bar = move_by * self.health
 
         pygame.draw.rect(win, (255,0,0), (self.x - 5, self.y - 55, length, 10), 0)
@@ -454,6 +454,7 @@ class Axeman(Enemy):
     def __init__(self):
         super().__init__()
         self.max_health = 10
+        self.health = self.max_health
         self.imgs = Axeman_imgs[:]
         self.name = "axeman"
         self.reward = 30
