@@ -74,7 +74,9 @@ class Game:
                         #Check to see if tower menu icons have been clicked on
                         tower_menu_button = self.menu.get_clicked(pos[0], pos[1])
                         if tower_menu_button:
-                            self.add_tower(tower_menu_button)
+                            if self.money >= self.menu.get_item_cost(tower_menu_button):
+                                self.money -= self.menu.get_item_cost(tower_menu_button)
+                                self.add_tower(tower_menu_button)
                         
                         #Check to see if a tower is selected
                         button_clicked = None
@@ -274,6 +276,12 @@ class Tower_menu(Menu):
         button_x = self.x - 70
         button_y = self.y - 95 + (self.items - 1)*110
         self.buttons.append(Tower_menu_button(button_x, button_y, img, name, cost))
+
+    def get_item_cost(self, name):
+        for button in self.buttons:
+            if button.name == name:
+                return button.cost
+        return -1
 
     def draw(self, win):
         win.blit(self.background, ((self.x - self.background.get_width()/2) - 5, self.y - 140))
