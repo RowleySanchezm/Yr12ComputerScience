@@ -22,8 +22,8 @@ class Game:
         self.height = 700
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
-        self.towers = [QuickArcherTower(480,250), PowerfulArcherTower(850,490), PowerfulArcherTower(850,250)]
-        self.support_towers = [DamageTower(560,300)]
+        self.towers = []
+        self.support_towers = []
         self.lives = 10
         self.money = 20000
         self.background = pygame.image.load(os.path.join("Game_images","background1.png"))
