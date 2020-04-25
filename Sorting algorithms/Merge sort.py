@@ -40,6 +40,6 @@ def merge_sort(merge_list):
     #End if
 #End function
 
-merge_list = [6, 4, 8, 2, 22, 55, 1, 78]
+merge_list = [6,5,2,77,55,334,53,553,53,64,76,24,86,43,55,1,335,545,6,7,38]
 merge_sort(merge_list)
 print(merge_list)
