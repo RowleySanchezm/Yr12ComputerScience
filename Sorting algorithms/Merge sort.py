@@ -1,5 +1,7 @@
 #Merge sort algroithm
 
+import time
+
 def merge_sort(merge_list):
     #Divide the list into two seperate lists
     if len(merge_list) > 1:
@@ -41,5 +43,8 @@ def merge_sort(merge_list):
 #End function
 
 merge_list = [6,5,2,77,55,334,53,553,53,64,76,24,86,43,55,1,335,545,6,7,38]
+start = time.perf_counter()
 merge_sort(merge_list)
-print(merge_list)
+end = time.perf_counter()
+elapsed = end - start
+print("Sorted list: ", merge_list, " Time taken: ", elapsed)
