@@ -42,7 +42,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            clock.tick(200)
+            clock.tick(120)
             #Generates enemies
             if time.time() - self.timer >= 6:
                 self.timer = time.time()
