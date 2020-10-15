@@ -9,7 +9,7 @@ pygame.font.init()
 #Load heart image for lives counter
 lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
 #Load tower menu background
-tower_menu_img = pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png"))
+tower_menu_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png")), (150, 590))
 
 class Game:
     #Constructor
@@ -36,7 +36,7 @@ class Game:
         #What tower has been selected
         self.selected_tower = None
         #Instantiate tower menu
-        self.menu = Tower_menu(self.width - tower_menu_img.get_width() - 5, 200, tower_menu_img)
+        self.menu = Tower_menu(85, 240, tower_menu_img)
 
     #Method that holds and executes the actual game loop
     def run(self):
