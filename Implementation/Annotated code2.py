@@ -10,6 +10,11 @@ pygame.font.init()
 lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
 #Load tower menu background
 tower_menu_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png")), (150, 590))
+#Tower menu icon images
+range_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","range_support.png")), (50, 50))
+attack_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","attack_support.png")), (50, 50))
+powerful_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","powerful_archer.png")), (50, 50))
+quick_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","quick_archer.png")), (50, 50))
 
 class Game:
     #Constructor
@@ -37,6 +42,11 @@ class Game:
         self.selected_tower = None
         #Instantiate tower menu
         self.menu = Tower_menu(85, 240, tower_menu_img)
+        #Instantiation of tower menu buttons
+        self.menu.add_button(powerful_archer_img, "powerful_archer", 600)
+        self.menu.add_button(quick_archer_img, "quick_archer", 500)
+        self.menu.add_button(range_support_img, "range_support", 1000)
+        self.menu.add_button(attack_support_img, "attack_support", 1000)
 
     #Method that holds and executes the actual game loop
     def run(self):
