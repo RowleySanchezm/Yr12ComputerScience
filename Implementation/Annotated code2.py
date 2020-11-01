@@ -66,7 +66,7 @@ class Game:
                 #Set equal for next interval
                 self.timer = time.time()
                 #Spawn random choice of enemy 
-                self.enemies.append(random.choice([Clubman()]))
+                self.enemies.append(random.choice([Knight(), Clubman(), Swordsman(), Battleaxe(), Axeman()]))
 
             #Gets mouse position
             pos = pygame.mouse.get_pos()
