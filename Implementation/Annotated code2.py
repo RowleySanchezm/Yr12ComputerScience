@@ -9,12 +9,15 @@ pygame.font.init()
 #Load heart image for lives counter
 lives_img = pygame.image.load(os.path.join("Game_images/GameInterface","heart.png"))
 #Load tower menu background
-tower_menu_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png")), (150, 590))
+tower_menu_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","menu2.png")), (150, 500))
 #Tower menu icon images
-range_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","range_support.png")), (50, 50))
-attack_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","attack_support.png")), (50, 50))
-powerful_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","powerful_archer.png")), (50, 50))
-quick_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","quick_archer.png")), (50, 50))
+range_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","range_support.png")), (75, 75))
+attack_support_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","attack_support.png")), (75, 75))
+powerful_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","powerful_archer.png")), (75, 75))
+quick_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","quick_archer.png")), (75, 75))
+#Global names for type of tower
+support_tower_names = ["range_object", "damage_object"]
+attack_tower_names = ["powerful_archer", "quick_archer"]
 
 class Game:
     #Constructor
@@ -26,8 +29,8 @@ class Game:
         self.win = pygame.display.set_mode((self.width, self.height))
         #Empty lists for enemies and towers
         self.enemies = []
-        self.towers = [CrossBowTower(480,250), PowerfulArcherTower(850,490)]
-        self.support_towers = [RangeTower(560,300)]
+        self.towers = []
+        self.support_towers = []
         #Amount of lives and money that the player has
         self.lives = 10
         self.money = 10000
@@ -43,69 +46,103 @@ class Game:
         #Instantiate tower menu
         self.menu = Tower_menu(85, 240, tower_menu_img)
         #Instantiation of tower menu buttons
-        self.menu.add_button(powerful_archer_img, "powerful_archer", 600)
         self.menu.add_button(quick_archer_img, "quick_archer", 500)
+        self.menu.add_button(powerful_archer_img, "powerful_archer", 600)
         self.menu.add_button(range_support_img, "range_support", 1000)
         self.menu.add_button(attack_support_img, "attack_support", 1000)
+        #Determines if a tower is being placed
+        self.moving_object = None
 
     #Method that holds and executes the actual game loop
     def run(self):
         run = True
         clock = pygame.time.Clock()
         while run:
+            #This is the amount of frames that should pass per second
+            clock.tick(180)
+            
             #When time interval is greater than 6
             if time.time() - self.timer >= 6:
                 #Set equal for next interval
                 self.timer = time.time()
                 #Spawn random choice of enemy 
                 self.enemies.append(random.choice([Knight(), Swordsman(), Battleaxe()]))
-                
-            #This is the amount of frames that should pass per second
-            clock.tick(180)
+
+            #Gets mouse position
+            pos = pygame.mouse.get_pos()
+
+            #See if object is being moved
+            if self.moving_object:
+                #Object follows the mouse position
+                self.moving_object.move(pos[0], pos[1])
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
 
-                #Gets mouse position
-                pos = pygame.mouse.get_pos()
                 #If mouse is pressed
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    button_clicked = None
-                    #If a selecetd tower
-                    if self.selected_tower:
-                        #Button is pressed
-                        button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
-                        if button_clicked:
-                            #If upgrade button is clicked
-                            if button_clicked == "Upgrade":
-                                #Get cost of selected tower
-                                cost = self.selected_tower.menu.get_item_cost()
-                                #Check if player has enough money to cover cost
-                                if self.money >= cost:
-                                    #Take cost away from total money
-                                    self.money -= cost
-                                    #Upgrade selected tower
-                                    self.selected_tower.upgrade()
-                                
-                    if not(button_clicked):
-                        #Run through tower list
-                        for tower in self.towers:
-                            #Check if attacking tower has been clicked on
-                            if tower.click(pos[0],pos[1]):
-                                tower.selected = True
-                                #Assign selected tower
-                                self.selected_tower = tower
-                            else:
-                                tower.selected = False
-                        #Run through support tower list
-                        for tower in self.support_towers:
-                            #Check if support tower has been clicked on
-                            if tower.click(pos[0],pos[1]):
-                                tower.selected = True
-                                #Assign selected tower
-                                self.selected_tower = tower
-                            else:
-                                tower.selected = False
+                    #Check for moving object plus mouse down
+                    if self.moving_object:
+                        #If moving object is an attack tower
+                        if self.moving_object.name in attack_tower_names:
+                            #Add to attack tower list
+                            self.towers.append(self.moving_object)
+                        #If moving object is a support tower
+                        elif self.moving_object.name in support_tower_names:
+                            #Add to support tower list
+                            self.support_towers.append(self.moving_object)
+                        #Reset once complete
+                        self.moving_object.moving = False
+                        self.moving_object = None
+                        
+                    else:
+                        #Check to see if tower menu icons have been clicked on
+                        tower_menu_button = self.menu.get_clicked(pos[0], pos[1])
+                        if tower_menu_button:
+                            #If player has enough money for tower
+                            if self.money >= self.menu.get_item_cost(tower_menu_button):
+                                #Deduct tower cost from money
+                                self.money -= self.menu.get_item_cost(tower_menu_button)
+                                #Add tower
+                                self.add_tower(tower_menu_button)
+                        
+                        #Check to see if a tower is selected
+                        button_clicked = None
+                        if self.selected_tower:
+                            #Button pressed
+                            button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
+                            if button_clicked:
+                                #If upgrade button is clicked
+                                if button_clicked == "Upgrade":
+                                    #Get cost of tower upgrade
+                                    cost = self.selected_tower.menu.get_item_cost()
+                                    #If player has enough money to cover cost
+                                    if self.money >= cost:
+                                        #Take cost away from player money
+                                        self.money -= cost
+                                        #Upgrade tower
+                                        self.selected_tower.upgrade()
+
+                        if not(button_clicked):
+                            #Run through tower list
+                            for tower in self.towers:
+                                #Check if attacking tower has been clicked on
+                                if tower.click(pos[0],pos[1]):
+                                    tower.selected = True
+                                    #Assign selected tower
+                                    self.selected_tower = tower
+                                else:
+                                    tower.selected = False
+                            #Run through support tower list
+                            for tower in self.support_towers:
+                                #Check if any have been clicked on
+                                if tower.click(pos[0],pos[1]):
+                                    tower.selected = True
+                                    #Assign selected tower
+                                    self.selected_tower = tower
+                                else:
+                                    tower.selected = False
 
             #Deleting enemies off the screen
             to_del = []
@@ -157,6 +194,10 @@ class Game:
         for enemy in self.enemies:
             enemy.draw(self.win)
 
+        #Objects being purchased
+        if self.moving_object:
+            self.moving_object.draw(self.win)
+        
         #Draw menu
         self.menu.draw(self.win)
 
@@ -176,21 +217,40 @@ class Game:
 
         pygame.display.update()
 
+    #Method for adding towers
+    def add_tower(self, name):
+        #Coordinates of mouse position
+        x, y = pygame.mouse.get_pos()
+        #List of tower names
+        name_list = ["quick_archer", "powerful_archer", "range_support", "attack_support"]
+        #List of tower objects
+        object_list = [CrossBowTower(x,y), PowerfulArcherTower(x,y), RangeTower(x,y), DamageTower(x,y)]
+        #Tests block
+        try:
+            #Assigns relevant tower according to name given in argument
+            obj = object_list[name_list.index(name)]
+            #Obj is now moving object with mouse
+            self.moving_object = obj
+            obj.moving = True
+        #If it does not work
+        except Exception as e:
+            print(str(e) + "Not valid name")
+
 #Load star image for in game currency
 star_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_images/GameInterface","star.png")), (50, 50))
 
 #Class for button
 class Button:
     #Constructor
-    def __init__(self, x, y, img, name):
+    def __init__(self, menu, img, name):
         #Name of button
         self.name = name
         #Button image
         self.img = img
-        #X coordinate
-        self.x = x
-        #Y coordinate
-        self.y = y
+        #Coordinates of menu 
+        self.x = menu.x - 55
+        self.y = menu.y - 130
+        self.menu = menu
         #Width of image
         self.width = self.img.get_width()
         #Height of image
@@ -208,12 +268,26 @@ class Button:
     def draw(self, win):
         win.blit(self.img, (self.x, self.y))
 
+    #Method to update position of button
+    def update(self):
+        self.x = self.menu.x - 55
+        self.y = self.menu.y - 130
+
 #Class for tower menu button
 #Subclass of button
 class Tower_menu_button(Button):
     #Constructor
     def __init__(self, x, y, img, name, cost):
-        super().__init__(x, y, img, name)
+        #Name
+        self.name = name
+        #Image
+        self.img = img
+        #Coordinates for position
+        self.x = x
+        self.y = y
+        #Dimensions
+        self.width = self.img.get_width()
+        self.height = self.img.get_height()
         #Cost of tower
         self.cost = cost
 
@@ -246,11 +320,8 @@ class Menu:
     def add_button(self, img, name):
         #Add an extra item
         self.items += 1
-        #Spacing between the buttons
-        button_x = ((self.x - self.background.get_width()/2) - 5) + 10
-        button_y = (self.y - 140) + 10
         #Add new object to the list
-        self.buttons.append(Button(button_x, button_y, img, name))
+        self.buttons.append(Button(self, img, name))
 
     #Gets cost of item
     def get_item_cost(self):
@@ -278,6 +349,13 @@ class Menu:
                 return button.name
         return None
 
+    #Menu update
+    def update(self):
+        #Runs through the buttons
+        for button in self.buttons:
+            #Calls button update method
+            button.update()
+    
 #Menu subclass
 class Tower_menu(Menu):
     def __init__(self, x, y, img):
@@ -301,10 +379,21 @@ class Tower_menu(Menu):
         #Each time button is created an item is added
         self.items += 1
         #Spacing for button
-        button_x = self.x + 10
-        button_y = self.y + 10 + (self.items - 1)*60
+        button_x = self.x - 70
+        button_y = self.y - 95 + (self.items - 1)*110
         #Instantiating tower menu button
         self.buttons.append(Tower_menu_button(button_x, button_y, img, name, cost))
+
+    #Method for getting tower cost
+    def get_item_cost(self, name):
+        #Run through button list
+        for button in self.buttons:
+            #Check if name of button matches input
+            if button.name == name:
+                #Return cost
+                return button.cost
+        #Finished            
+        return -1
 
     #Method for drawing menu
     def draw(self, win):
@@ -313,9 +402,9 @@ class Tower_menu(Menu):
         #Draws button for each item in tower menu
         for item in self.buttons:
             item.draw(win)
-            win.blit(star_img, (item.x + item.width + 5, item.y - 9))
+            win.blit(star_img, (item.x + item.width + 5, item.y + 5))
             text = self.font.render(str(item.cost), 1, (255,255,255))
-            win.blit(text, (item.x + item.width + 30 - text.get_width()/2, item.y + star_img.get_height() - 8))
+            win.blit(text, (item.x + item.width + 30 - text.get_width()/2, item.y + star_img.get_height() + 5))
 
 #Enemy superclass
 class Enemy:
@@ -599,6 +688,11 @@ class Tower:
     def move(self, x, y):
         self.x = x
         self.y = y
+        #Update position of menu
+        self.menu.x = x
+        self.menu.y = y
+        #Menu update
+        self.menu.update()
 
 #List for tower images
 tower_imgs = []
@@ -616,6 +710,8 @@ for x in range(38,44):
 class PowerfulArcherTower(Tower):
     def __init__(self, x, y):
         super().__init__(x, y)
+        #Tower name
+        self.name = "powerful_archer"
         #Instantiate menu
         self.menu = Menu(self, self.x, self.y, menu_background, [2000, 5000, "Max lv"])
         self.menu.add_button(upgrade_button, "Upgrade")
@@ -639,6 +735,8 @@ class PowerfulArcherTower(Tower):
         self.original_damage = self.damage
         #Width and height of tower
         self.width = self.height = 90
+        #Determines if tower is moving
+        self.moving = False
 
     #Gets cost of tower upgrade
     def get_upgrade_cost(self):
@@ -650,8 +748,8 @@ class PowerfulArcherTower(Tower):
         super().draw_radius(win)
         #Inherits draw method from superclass
         super().draw(win)
-        #Only animates when enemy is in range
-        if self.in_range == True:
+        #Only animates when enemy is in range or not moving 
+        if self.in_range and not self.moving:
             self.archer_count += 1
             #Checks if archer count needs to be reset
             if self.archer_count >= len(self.archer_imgs)*3:
@@ -748,6 +846,8 @@ for x in range(51,56):
 class CrossBowTower(PowerfulArcherTower):
     def __init__(self, x, y):
         super().__init__(x, y)
+        #Tower name
+        self.name = "quick_archer"
         #Instantiate menu
         self.menu = Menu(self, self.x, self.y, menu_background, [2500, 6000, "Max lv"])
         self.menu.add_button(upgrade_button, "Upgrade")
@@ -777,6 +877,8 @@ class RangeTower(Tower):
     #Constructor
     def __init__(self, x, y):
         super().__init__(x,y)
+        #Name of tower
+        self.name = "range_object"
         #Range
         self.range = 125
         #Original range
@@ -822,6 +924,8 @@ class DamageTower(RangeTower):
     #Constructor
     def __init__(self, x, y):
         super().__init__(x,y)
+        #Name of tower
+        self.name = "damage_object"
         #Radius
         self.range = 125
         #Effect increase when upgraded
