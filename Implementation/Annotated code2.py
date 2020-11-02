@@ -68,6 +68,12 @@ class Game:
                 #Spawn random choice of enemy 
                 self.enemies.append(random.choice([Knight(), Clubman(), Swordsman(), Battleaxe(), Axeman()]))
 
+            playlist = []
+            playlist.append("bensound-epic.mp3")
+            pygame.mixer.init()
+            pygame.mixer.music.load(playlist.pop())
+            pygame.mixer.music.play(-1)
+
             #Gets mouse position
             pos = pygame.mouse.get_pos()
 
