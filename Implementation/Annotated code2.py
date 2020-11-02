@@ -68,12 +68,6 @@ class Game:
                 #Spawn random choice of enemy 
                 self.enemies.append(random.choice([Knight(), Clubman(), Swordsman(), Battleaxe(), Axeman()]))
 
-            playlist = []
-            playlist.append("bensound-epic.mp3")
-            pygame.mixer.init()
-            pygame.mixer.music.load(playlist.pop())
-            pygame.mixer.music.play(-1)
-
             #Gets mouse position
             pos = pygame.mouse.get_pos()
 
@@ -1000,8 +994,18 @@ class DamageTower(RangeTower):
         #Effected towers have damage increased depending on level
         for tower in effected:
             tower.damage = tower.original_damage + round(tower.original_damage * self.effect[self.level - 1])
-                
 
+
+#List for audio clips
+playlist = []
+#Append desired game sound
+playlist.append("bensound-epic.mp3")
+#Initialise mixer
+pygame.mixer.init()
+#Pop audio file
+pygame.mixer.music.load(playlist.pop())
+#Play on repeated loop
+pygame.mixer.music.play(-1)
 #Executes the run function of the game class
 g = Game()
 g.run()
