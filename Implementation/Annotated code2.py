@@ -19,6 +19,40 @@ quick_archer_img = pygame.transform.scale(pygame.image.load(os.path.join("Game_i
 support_tower_names = ["range_object", "damage_object"]
 attack_tower_names = ["powerful_archer", "quick_archer"]
 
+class Game_menu:
+    #Constructor
+    def __init__(self):
+        #Window size
+        self.width = 1100
+        self.height = 700
+        #Initialise a window or screen for display
+        self.win = pygame.display.set_mode((self.width, self.height))
+        #Menu image
+        self.game_menu_img = pygame.image.load(os.path.join("Game_images","GameMenu.png"))
+        self.game_menu_img = pygame.transform.scale(self.game_menu_img, (self.width, self.height))
+        
+    #Menu run method
+    def run(self):
+        intro = True
+        clock = pygame.time.Clock()
+        while intro:
+            #This is the amount of frames that should pass per second
+            clock.tick(15)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    
+            #Call draw method
+            self.draw()
+        pygame.quit()
+
+    #Method to draw any objects into the actual game
+    def draw(self):
+        #Draw menu background
+        self.win.blit(self.game_menu_img, (0,0))
+        
+        pygame.display.update()
+
 class Game:
     #Constructor
     def __init__(self):
@@ -1007,5 +1041,7 @@ pygame.mixer.music.load(playlist.pop())
 #Play on repeated loop
 pygame.mixer.music.play(-1)
 #Executes the run function of the game class
+m = Game_menu()
 g = Game()
-g.run()
+#g.run()
+m.run()
