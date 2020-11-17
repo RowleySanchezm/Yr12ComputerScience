@@ -28,9 +28,9 @@ class Game_menu:
         #Initialise a window or screen for display
         self.win = pygame.display.set_mode((self.width, self.height))
         #Menu image
-        self.game_menu_img = pygame.image.load(os.path.join("Game_images","GameMenu.png"))
+        self.game_menu_img = pygame.image.load(os.path.join("Game_images","GameMenu2.png"))
         self.game_menu_img = pygame.transform.scale(self.game_menu_img, (self.width, self.height))
-        
+
     #Menu run method
     def run(self):
         intro = True
@@ -41,7 +41,10 @@ class Game_menu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                    
+                #When button is pressed it goes to game
+                if event.type == pygame.KEYDOWN:
+                    g= Game()
+                    g.run()
             #Call draw method
             self.draw()
         pygame.quit()
@@ -50,7 +53,6 @@ class Game_menu:
     def draw(self):
         #Draw menu background
         self.win.blit(self.game_menu_img, (0,0))
-        
         pygame.display.update()
 
 class Game:
