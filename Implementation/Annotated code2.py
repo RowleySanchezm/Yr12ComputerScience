@@ -40,13 +40,16 @@ class Game_menu:
             clock.tick(15)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    run = False
+                    pygame.quit()
+                    intro = False
                 #When button is pressed it goes to game
                 if event.type == pygame.KEYDOWN:
-                    g= Game()
+                    g = Game()
                     g.run()
-            #Call draw method
-            self.draw()
+                    intro = False
+                if intro:
+                    #Call draw method
+                    self.draw()
         pygame.quit()
 
     #Method to draw any objects into the actual game
@@ -1044,6 +1047,4 @@ pygame.mixer.music.load(playlist.pop())
 pygame.mixer.music.play(-1)
 #Executes the run function of the game class
 m = Game_menu()
-g = Game()
-#g.run()
 m.run()
